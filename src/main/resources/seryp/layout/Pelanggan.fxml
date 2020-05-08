@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="809.0" styleClass="seryp-bg-transparent" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seryp.controller.PelangganController">
+   <children>
+      <HBox fx:id="topBar" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="809.0">
+         <styleClass>
+            <String fx:value="seryp-bg-blue" />
+            <String fx:value="seryp-round" />
+         </styleClass>
+         <children>
+            <Label text="Seryp" />
+            <Region prefHeight="30.0" prefWidth="689.0" />
+            <Button fx:id="btnMinimize" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="46.0" prefWidth="30.0" styleClass="seryp-btn-icon">
+               <graphic>
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/icon/baseline_minimize_black_18dp.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </Button>
+            <Button fx:id="btnClose" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="46.0" prefWidth="30.0" styleClass="seryp-btn-icon">
+               <graphic>
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/icon/baseline_close_black_18dp.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </HBox>
+      <SplitPane dividerPositions="0.20234113712374582" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="809.0" styleClass="seryp-bg-transparent">
+         <items>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="200.0">
+               <children>
+                  <VBox fx:id="sideBar" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Ellipse fx:id="imgFotoProfil" fill="DODGERBLUE" radiusX="63.0" radiusY="67.0" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND">
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
+                           <effect>
+                              <DropShadow height="10.0" radius="4.5" width="10.0" />
+                           </effect>
+                        </Ellipse>
+                        <Label fx:id="lblName" text="Karyawan Name">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Label>
+                        <Label fx:id="lblContactPerson" text="Contact Person">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Label>
+                     </children>
+                     <padding>
+                        <Insets top="30.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <styleClass>
+                  <String fx:value="seryp-bg-blue" />
+                  <String fx:value="seryp-round" />
+               </styleClass>
+            </AnchorPane>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="600.0">
+               <children>
+                  <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <TitledPane fx:id="paneCariPelanggan" animated="false" prefHeight="20.0" prefWidth="176.0" styleClass="seryp-titled-pane" text="Cari Barang">
+                           <content>
+                              <GridPane alignment="CENTER" hgap="10.0" minHeight="-Infinity" prefHeight="120.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="459.0" minWidth="285.0" prefWidth="404.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="275.0" minWidth="101.0" prefWidth="156.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="1.0" prefHeight="1.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="1.0" prefHeight="1.0" valignment="TOP" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="1.0" prefHeight="1.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="1.0" prefHeight="1.0" valignment="TOP" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button fx:id="btnCari" mnemonicParsing="false" prefHeight="28.0" prefWidth="191.0" text="Cari" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <styleClass>
+                                          <String fx:value="seryp-round" />
+                                          <String fx:value="seryp-btn-primary" />
+                                       </styleClass>
+                                    </Button>
+                                    <Label text="Cari Pelanggan" />
+                                    <Label text="Result" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtCariPelanggan" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" styleClass="seryp-round" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                       <padding>
+                                          <Insets left="30.0" />
+                                       </padding>
+                                    </TextField>
+                                    <ComboBox fx:id="cboResult" prefHeight="25.0" prefWidth="439.0" styleClass="seryp-round" GridPane.rowIndex="3" />
+                                    <Label text="ID" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtId" styleClass="seryp-round" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <ImageView fitHeight="25.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                                       <image>
+                                          <Image url="@../assets/icon/baseline_search_black_18dp.png" />
+                                       </image>
+                                       <GridPane.margin>
+                                          <Insets left="3.0" />
+                                       </GridPane.margin>
+                                    </ImageView>
+                                 </children>
+                              </GridPane>
+                           </content>
+                           <VBox.margin>
+                              <Insets top="-20.0" />
+                           </VBox.margin>
+                        </TitledPane>
+                        <ToggleButton fx:id="btnCariPelanggan" minWidth="200.0" mnemonicParsing="false" styleClass="seryp-btn-primary" text="Cari Pelanggan" />
+                        <GridPane hgap="10.0" vgap="5.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="20.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="20.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="20.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="70.0" prefHeight="70.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="Nama Pelanggan" />
+                              <TextField fx:id="txtNamaPelanggan" promptText="nama pelanggan" styleClass="seryp-round" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                              <Label text="No Handphone" GridPane.rowIndex="2" />
+                              <Label text="Jenis Kelamin" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                              <TextField fx:id="txtNoHandphone" promptText="08..." styleClass="seryp-round" GridPane.rowIndex="3" />
+                              <RadioButton fx:id="rbLaki" mnemonicParsing="false" text="Laki laki" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
+                              <RadioButton fx:id="rbPerempuan" mnemonicParsing="false" text="Perempuan" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                              <Label text="Alamat" GridPane.rowIndex="4" />
+                              <TextArea fx:id="txtAreaAlamat" prefHeight="200.0" prefWidth="158.0" styleClass="seryp-text-area" wrapText="true" GridPane.columnSpan="3" GridPane.rowIndex="5" />
+                              <Button fx:id="btnBack" mnemonicParsing="false" prefHeight="25.0" prefWidth="193.0" text="Back" GridPane.rowIndex="7">
+                                 <styleClass>
+                                    <String fx:value="seryp-round" />
+                                    <String fx:value="seryp-btn-primary" />
+                                 </styleClass>
+                              </Button>
+                              <Button fx:id="btnNext" mnemonicParsing="false" prefHeight="29.0" prefWidth="395.0" text="Next" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7">
+                                 <styleClass>
+                                    <String fx:value="seryp-round" />
+                                    <String fx:value="seryp-btn-primary" />
+                                 </styleClass>
+                              </Button>
+                              <Button fx:id="btnUpdate" mnemonicParsing="false" prefHeight="25.0" prefWidth="195.0" text="Update" GridPane.rowIndex="6">
+                                 <styleClass>
+                                    <String fx:value="seryp-round" />
+                                    <String fx:value="seryp-btn-primary" />
+                                 </styleClass>
+                              </Button>
+                              <Button fx:id="btnAdd" mnemonicParsing="false" prefHeight="25.0" prefWidth="201.0" text="Add" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                 <styleClass>
+                                    <String fx:value="seryp-round" />
+                                    <String fx:value="seryp-btn-primary" />
+                                 </styleClass>
+                              </Button>
+                              <Button fx:id="btnDelete" mnemonicParsing="false" prefHeight="25.0" prefWidth="213.0" text="Delete" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                 <styleClass>
+                                    <String fx:value="seryp-round" />
+                                    <String fx:value="seryp-btn-primary" />
+                                 </styleClass>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="7.0" />
+                           </VBox.margin>
+                        </GridPane>
+                     </children>
+                  </VBox>
+               </children>
+               <styleClass>
+                  <String fx:value="seryp-round" />
+                  <String fx:value="seryp-bg-blue" />
+               </styleClass>
+               <padding>
+                  <Insets bottom="10.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </AnchorPane>
+         </items>
+      </SplitPane>
+   </children>
+</VBox>

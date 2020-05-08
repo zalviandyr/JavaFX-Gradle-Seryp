@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="700.0" spacing="5.0" styleClass="seryp-bg-transparent" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seryp.controller.InstalasiController">
+   <children>
+      <HBox fx:id="topBar" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="700.0">
+         <styleClass>
+            <String fx:value="seryp-bg-blue" />
+            <String fx:value="seryp-round" />
+         </styleClass>
+         <children>
+            <Label text="Seryp" />
+            <Region prefHeight="30.0" prefWidth="578.0" />
+            <Button fx:id="btnMinimize" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="46.0" prefWidth="30.0" styleClass="seryp-btn-icon">
+               <graphic>
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/icon/baseline_minimize_black_18dp.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </Button>
+            <Button fx:id="btnClose" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="46.0" prefWidth="30.0" styleClass="seryp-btn-icon">
+               <graphic>
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/icon/baseline_close_black_18dp.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </HBox>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+         <styleClass>
+            <String fx:value="seryp-round" />
+            <String fx:value="seryp-bg-blue" />
+         </styleClass>
+         <children>
+            <Label text="Toko">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Line endX="400.0" startX="-100.0" strokeLineCap="ROUND" strokeWidth="3.0" />
+            <Label text="Nama Toko">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Label>
+            <TextField fx:id="txtNamaToko" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="450.0" promptText="nama toko" styleClass="seryp-round" />
+            <Label text="Alamat Toko" />
+            <TextArea fx:id="txtAreaAlamatToko" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="450.0" promptText="alamat toko" styleClass="seryp-text-area" wrapText="true" />
+            <Label text="Foto Profil Path" />
+            <TextArea fx:id="txtAreaFotoProfilPath" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#fotoProfilPathAction" prefHeight="50.0" prefWidth="450.0" promptText="foto profil path" styleClass="seryp-text-area" />
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+      <VBox alignment="TOP_CENTER" spacing="5.0">
+         <styleClass>
+            <String fx:value="seryp-round" />
+            <String fx:value="seryp-bg-blue" />
+         </styleClass>
+         <children>
+            <Label text="User Admin">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Line endX="400.0" startX="-100.0" strokeLineCap="ROUND" strokeWidth="3.0" />
+            <GridPane hgap="10.0" vgap="5.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="439.0" minWidth="250.0" prefWidth="279.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="287.0" minWidth="163.0" prefWidth="243.0" />
+                  <ColumnConstraints maxWidth="342.0" minWidth="206.0" prefWidth="240.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="20.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="20.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="20.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="20.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="70.0" prefHeight="70.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label text="Username" />
+                  <Label text="Password" GridPane.columnIndex="1" />
+                  <TextField fx:id="txtUsername" promptText="username" styleClass="seryp-round" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtPassword2" promptText="password" styleClass="seryp-round" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                  <Label text="Nama" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtNama" promptText="nama lengkap" styleClass="seryp-round" GridPane.columnSpan="3" GridPane.rowIndex="3" />
+                  <Label text="No Handphone" GridPane.rowIndex="4" />
+                  <Label text="Jenis Kelamin" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                  <Label text="Tanggal Lahir" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                  <TextField fx:id="txtNoHandphone" promptText="08......" styleClass="seryp-round" GridPane.rowIndex="5" />
+                  <RadioButton fx:id="rbLaki" mnemonicParsing="false" text="Laki laki" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
+                  <RadioButton fx:id="rbPerempuan" mnemonicParsing="false" text="Perempuan" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                  <Label text="Alamat" GridPane.rowIndex="6" />
+                  <TextArea fx:id="txtAreaAlamatUser" prefHeight="200.0" prefWidth="158.0" styleClass="seryp-text-area" wrapText="true" GridPane.columnSpan="3" GridPane.rowIndex="7" />
+                  <DatePicker fx:id="datePickerTanggalLahir" prefHeight="25.0" prefWidth="236.0" styleClass="seryp-date-picker" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                  <PasswordField fx:id="txtPassword" promptText="password" styleClass="seryp-round" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                  <Button fx:id="btnRemoveRedEye" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onMousePressed="#btnRemoveRedEyePressed" onMouseReleased="#btnRemoveRedEyeReleased" styleClass="seryp-btn-icon" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="160.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/icon/remove_red_eye.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnKonfirmasi" mnemonicParsing="false" onAction="#btnKonfirmasiAction" prefHeight="28.0" prefWidth="569.0" styleClass="seryp-btn-primary" text="Konfirmasi" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </GridPane>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </children>
+</VBox>

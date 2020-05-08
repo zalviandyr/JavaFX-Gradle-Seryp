@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<SplitPane dividerPositions="0.29797979797979796" prefHeight="330.0" prefWidth="600.0" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seryp.controller.SplashController">
+   <items>
+      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+         <children>
+            <ImageView fitHeight="239.0" fitWidth="215.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/img/computer-logo-png-8.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0">
+         <children>
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="158.0" prefWidth="275.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label text="Seryp">
+                     <font>
+                        <Font size="60.0" />
+                     </font>
+                  </Label>
+                  <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="267.0" progress="0.2" styleClass="seryp-progress-bar" />
+                  <Label fx:id="lblStatus" text="Label" />
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </items>
+   <styleClass>
+      <String fx:value="seryp-round" />
+      <String fx:value="seryp-bg-blue" />
+   </styleClass>
+</SplitPane>

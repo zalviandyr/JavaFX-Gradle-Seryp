@@ -1,0 +1,47 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'org.beryx.jlink' version '2.18.0'
+}
+
+javafx {
+    version = "14"
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+mainClassName = "seryp.SerypFX"
+//
+//jar {
+//    manifest {
+//        attributes 'Main-Class': 'seryp.Launcher'
+//    }
+//    from {
+//        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+//    }
+//}
+
+jlink {
+    launcher {
+        name = 'Gradle Seryp'
+    }
+}
+
+group 'org.example'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation files("libs/jasperreports-6.12.2.jar")
+    implementation files("libs/mysql-connector-java-5.1.23-bin.jar")
+    implementation files("libs/commons-beanutils-1.9.4.jar")
+    implementation files("libs/commons-collections4-4.4.jar")
+    implementation files("libs/commons-collections-2.1.jar")
+    implementation files("libs/commons-digester-2.1.jar")
+    implementation files("libs/commons-logging-1.2.jar")
+    implementation files("libs/itext-2.1.7.js4.jar")
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+

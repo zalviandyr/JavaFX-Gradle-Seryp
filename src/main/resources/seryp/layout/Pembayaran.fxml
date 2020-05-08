@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="809.0" styleClass="seryp-bg-transparent" stylesheets="@../assets/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seryp.controller.PembayaranController">
+   <children>
+      <HBox fx:id="topBar" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="809.0">
+         <styleClass>
+            <String fx:value="seryp-bg-blue" />
+            <String fx:value="seryp-round" />
+         </styleClass>
+         <children>
+            <Label text="Seryp" />
+            <Region prefHeight="30.0" prefWidth="689.0" />
+            <Button fx:id="btnMinimize" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="46.0" prefWidth="30.0" styleClass="seryp-btn-icon">
+               <graphic>
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/icon/baseline_minimize_black_18dp.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </Button>
+            <Button fx:id="btnClose" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="46.0" prefWidth="30.0" styleClass="seryp-btn-icon">
+               <graphic>
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/icon/baseline_close_black_18dp.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </HBox>
+      <SplitPane dividerPositions="0.20234113712374582" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="809.0" styleClass="seryp-bg-transparent">
+         <items>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="200.0">
+               <children>
+                  <VBox fx:id="sideBar" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Ellipse fx:id="imgFotoProfil" fill="DODGERBLUE" radiusX="63.0" radiusY="67.0" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND">
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
+                           <effect>
+                              <DropShadow height="10.0" radius="4.5" width="10.0" />
+                           </effect>
+                        </Ellipse>
+                        <Label fx:id="lblName" text="Karyawan Name">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Label>
+                        <Label fx:id="lblContactPerson" text="Contact Person">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Label>
+                     </children>
+                     <padding>
+                        <Insets top="30.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <styleClass>
+                  <String fx:value="seryp-bg-blue" />
+                  <String fx:value="seryp-round" />
+               </styleClass>
+            </AnchorPane>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="600.0">
+               <children>
+                  <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <TitledPane fx:id="paneCariPelanggan" animated="false" prefHeight="20.0" prefWidth="176.0" styleClass="seryp-titled-pane" text="Cari Barang">
+                           <content>
+                              <GridPane alignment="CENTER" hgap="10.0" minHeight="-Infinity" prefHeight="120.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="459.0" minWidth="285.0" prefWidth="404.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="275.0" minWidth="101.0" prefWidth="156.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="1.0" prefHeight="1.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="1.0" prefHeight="1.0" valignment="TOP" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="1.0" prefHeight="1.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="1.0" prefHeight="1.0" valignment="TOP" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button fx:id="btnCari" mnemonicParsing="false" prefHeight="28.0" prefWidth="191.0" text="Cari" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <styleClass>
+                                          <String fx:value="seryp-round" />
+                                          <String fx:value="seryp-btn-primary" />
+                                       </styleClass>
+                                    </Button>
+                                    <Label text="Cari No Faktur" />
+                                    <Label text="Nama Pelanggan" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtCariNoFaktur" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" promptText="F000" styleClass="seryp-round" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                       <padding>
+                                          <Insets left="30.0" />
+                                       </padding>
+                                    </TextField>
+                                    <Label text="Merek Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtMerekLabel" promptText="merek label" styleClass="seryp-round" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <ImageView fitHeight="25.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                                       <image>
+                                          <Image url="@../assets/icon/baseline_search_black_18dp.png" />
+                                       </image>
+                                       <GridPane.margin>
+                                          <Insets left="3.0" />
+                                       </GridPane.margin>
+                                    </ImageView>
+                                    <TextField fx:id="txtNamaPelanggan" promptText="nama pelanggan" styleClass="seryp-round" GridPane.rowIndex="3" />
+                                 </children>
+                              </GridPane>
+                           </content>
+                           <VBox.margin>
+                              <Insets top="-20.0" />
+                           </VBox.margin>
+                        </TitledPane>
+                        <ToggleButton fx:id="btnCariPelanggan" minWidth="200.0" mnemonicParsing="false" styleClass="seryp-btn-secondary" text="Cari No Faktur" />
+                        <TableView fx:id="tblKerusakanDanBarang" prefHeight="117.0" prefWidth="590.0">
+                          <columns>
+                            <TableColumn prefWidth="290.0" text="Kerusakan dan Barang" />
+                            <TableColumn prefWidth="299.0" text="Estimasi" />
+                          </columns>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </TableView>
+                        <GridPane hgap="5.0" vgap="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="388.0" minWidth="10.0" prefWidth="292.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="296.0" minWidth="10.0" prefWidth="293.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                 <children>
+                                    <Label text="Total Estimasi : " />
+                                    <Label fx:id="lblEstimasi" text="Estimasi" />
+                                 </children>
+                              </HBox>
+                              <CheckBox fx:id="cbPembayaranDP" mnemonicParsing="false" text="Apakah pembayaran DP ?" GridPane.rowIndex="1" />
+                              <CheckBox fx:id="cbPembayaranTunai" mnemonicParsing="false" text="Apakah pembayaran Tunai ?" GridPane.rowIndex="2" />
+                              <TextField fx:id="txtPembayaranDP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" styleClass="seryp-round" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <padding>
+                                    <Insets left="25.0" />
+                                 </padding>
+                              </TextField>
+                              <TextField fx:id="txtPembayaranTunai" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" styleClass="seryp-round" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <padding>
+                                    <Insets left="25.0" />
+                                 </padding>
+                              </TextField>
+                              <Label text="Rp. " GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <padding>
+                                    <Insets left="3.0" />
+                                 </padding>
+                              </Label>
+                              <Label text="Rp. " GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <padding>
+                                    <Insets left="3.0" />
+                                 </padding>
+                              </Label>
+                              <Button fx:id="btnKonfirmasiPembayaran" mnemonicParsing="false" prefHeight="25.0" prefWidth="404.0" styleClass="seryp-btn-primary" text="Konfirmasi Pembayaran" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Button fx:id="btnBack" mnemonicParsing="false" prefHeight="25.0" prefWidth="343.0" styleClass="seryp-btn-primary" text="Back" GridPane.rowIndex="3" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </VBox>
+               </children>
+               <styleClass>
+                  <String fx:value="seryp-round" />
+                  <String fx:value="seryp-bg-blue" />
+               </styleClass>
+               <padding>
+                  <Insets bottom="10.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </AnchorPane>
+         </items>
+      </SplitPane>
+   </children>
+</VBox>

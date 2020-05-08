@@ -1,0 +1,125 @@
+* {
+    -fx-font-family: "Ubuntu Bold";
+}
+
+.seryp-round {
+    -fx-background-radius: 20;
+}
+
+.seryp-bg-transparent {
+    -fx-background-color: transparent;
+}
+
+.seryp-bg-blue {
+    -fx-background-color: #A7D1DF;
+}
+
+.seryp-shadow {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8), 10, 0, 0, 0);
+}
+
+/* SPLIT PANE */
+.split-pane-divider {
+    -fx-background-color: transparent;
+}
+
+/* TEXT-FIELD */
+.seryp-text-field-error {
+    -fx-text-box-border: red;
+    -fx-focus-color: red;
+}
+
+/* BUTTON */
+.seryp-btn-primary {
+    -fx-background-insets: 0;
+    -fx-background-radius: 20;
+    -fx-background-color: linear-gradient(to bottom, #8FA4B5, #80BFDB);
+    -fx-border-color: #237385;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, #237385, 2, 0.5, 1, 1);
+}
+
+.seryp-btn-primary:hover {
+    -fx-background-color: linear-gradient(to bottom, #80BFDB, #8FA4B5);
+    -fx-effect: dropshadow(three-pass-box, #237385, 2, 0.2, 0, 0);
+}
+
+.seryp-btn-secondary {
+    -fx-background-insets: 0;
+    -fx-background-radius: 0 0 20 20;
+    -fx-background-color: linear-gradient(to bottom, #8FA4B5, #80BFDB);
+    -fx-border-color: #237385;
+    -fx-border-radius: 0 0 20 20;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, #237385, 2, 0.5, 1, 1);
+}
+
+.seryp-btn-secondary:hover,
+.seryp-btn-secondary:selected:hover {
+    -fx-background-color: linear-gradient(to bottom, #80BFDB, #8FA4B5);
+    -fx-effect: dropshadow(three-pass-box, #237385, 2, 0.2, 0, 0);
+}
+
+.seryp-btn-secondary:selected {
+    -fx-background-color: #8FA4B5;
+    -fx-effect: dropshadow(three-pass-box, #237385, 2, 0.2, 0, 0);
+}
+
+.seryp-btn-icon {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+/* DATE PICKER */
+.seryp-date-picker {
+    -fx-background-color: transparent;
+}
+
+.seryp-date-picker .text-field{
+    -fx-background-radius: 20;
+}
+
+/* TEXT-AREA */
+.seryp-text-area {
+    -fx-background-radius: 10;
+}
+
+.seryp-text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+.seryp-text-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+.seryp-text-area .scroll-pane .content{
+    -fx-background-radius: 10;
+}
+
+/* TITLED-PANE */
+.seryp-titled-pane > .title {
+    visibility: false;
+}
+
+.seryp-titled-pane > .content {
+    -fx-background-color: #80BFDB;
+    -fx-background-radius: 20 20 20 0;
+    -fx-border-width: 0;
+}
+
+.seryp-titled-pane > .title > .arrow {
+    visibility: false;
+}
+
+/* PROGRESS-BAR */
+.seryp-progress-bar > .bar {
+    -fx-background-color: linear-gradient(
+            from 0px .75em to .75em 0px,
+            repeat,
+            -fx-accent 0%,
+            -fx-accent 49%,
+            derive(-fx-accent, 30%) 50%,
+            derive(-fx-accent, 30%) 99%
+    );
+}
