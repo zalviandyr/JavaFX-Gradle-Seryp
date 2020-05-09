@@ -41,6 +41,9 @@ public class WindowControl {
     public FXMLLoader getFXMLLoader(String destination) {
         String path = "";
 
+        if (destination.equalsIgnoreCase("lupa password")) {
+            path = "/seryp/layout/LupaPassword.fxml";
+        }
         if (destination.equalsIgnoreCase("splash")) {
             path = "/seryp/layout/Splash.fxml";
         }

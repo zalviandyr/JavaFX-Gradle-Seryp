@@ -130,6 +130,15 @@ public class UserDao {
         preparedStatement.executeUpdate();
     }
 
+    public void updatePassword(String username, String password) throws SQLException {
+        String sql = "UPDATE user SET password = ? WHERE username = ?";
+        PreparedStatement preparedStatement = CONN.prepareStatement(sql);
+        preparedStatement.setString(1, password);
+        preparedStatement.setString(2, username);
+
+        preparedStatement.executeUpdate();
+    }
+
     public void delete(String username) throws SQLException {
         String sql = "DELETE FROM user WHERE username = ?";
         PreparedStatement preparedStatement = CONN.prepareStatement(sql);

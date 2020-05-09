@@ -25,6 +25,7 @@ public class LoginController extends SerypUtil implements Initializable {
     public HBox topBar;
     public Button btnLogin;
     public Button btnRemoveRedEye;
+    public Button btnLupaPassword;
     public TextField inputUsername;
     public PasswordField inputPassword;
     public TextField inputPassword2;
@@ -37,6 +38,7 @@ public class LoginController extends SerypUtil implements Initializable {
         init();
         btnRemoveRedEyeAction();
         btnLoginAction();
+        btnLupaPasswordAction();
         inputPasswordAction();
         inputActionError(inputUsername, inputPassword);
     }
@@ -87,6 +89,15 @@ public class LoginController extends SerypUtil implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 loginAction();
+            }
+        });
+    }
+
+    private void btnLupaPasswordAction() {
+        btnLupaPassword.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getWindowControl().moveToScene(btnLupaPassword, "lupa password");
             }
         });
     }
