@@ -15,20 +15,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import seryp.model.IdentitasToko;
-import seryp.model.User;
-import seryp.model.dao.IdentitasTokoDao;
-import seryp.model.dao.Koneksi;
-import seryp.model.dao.UserDao;
+import seryp.model.*;
+import seryp.model.dao.*;
 import seryp.utils.SerypUtil;
 import seryp.utils.boxes.AlertBox;
+import seryp.utils.boxes.ConfirmBox;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.*;
 
 public class SplashController extends SerypUtil implements Initializable {
@@ -151,9 +153,100 @@ public class SplashController extends SerypUtil implements Initializable {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    AlertBox.display("Failed to find Database", "Proses instalasi akan dilakukan!");
+                    boolean value = ConfirmBox.display("Failed to find Database", "Apakah anda ingin me-restore data-data yang ada ? ");
+                    if (value) { // Instalasi dengan database kosong (Restore)
+                        AlertBox.display("Failed to find Database", "Silahkan pilih DIRECTORY atau FOLDER \"Backup\" di dalam Folder \"Seryp Files\"");
+                        DirectoryChooser directoryChooser = new DirectoryChooser();
+                        File file = directoryChooser.showDialog(new Stage()); // untuk mengambil path "Seryp Files"
 
-                    getWindowControl().moveToScene(lblStatus, "instalasi");
+                        // declare variabel
+                        IdentitasToko identitasToko = null;
+                        List<User> userList = null;
+                        List<Barang> barangList = null;
+                        List<Kerusakan> kerusakanList = null;
+                        List<Pelanggan> pelangganList = null;
+                        List<Servis> servisList = null;
+                        List<DetailKerusakan> detailKerusakanList = null;
+
+                        if (file != null) {
+                            File[] listFiles = file.listFiles(); // untuk mengambil file yang ada di dalam path "Seryp Files"
+                            if (listFiles != null) {
+                                for (File file1 : listFiles) {
+                                    if (file1.getName().contains("IDENTITAS_TOKO")) {
+                                        identitasToko = getFileHandler().readIdentitasTokoSerypBk(file1);
+                                    }
+                                    if (file1.getName().contains("USER")) {
+                                        userList = getFileHandler().readUserSerypBk(file1);
+                                    }
+                                    if (file1.getName().contains("BARANG")) {
+                                        barangList = getFileHandler().readBarangSerypBk(file1);
+                                    }
+                                    if (file1.getName().contains("KERUSAKAN")) {
+                                        kerusakanList = getFileHandler().readKerusakanSerypBk(file1);
+                                    }
+                                    if (file1.getName().contains("PELANGGAN")) {
+                                        pelangganList = getFileHandler().readPelangganSerypBk(file1);
+                                    }
+                                    if (file1.getName().contains("SERVIS")) {
+                                        servisList = getFileHandler().readServisSerypBk(file1);
+                                    }
+                                    if (file1.getName().contains("DETAIL_KERUSAKAN")) {
+                                        detailKerusakanList = getFileHandler().readDetailKerusakanSerypBk(file1);
+                                    }
+                                }
+                            }
+                        }
+
+                        // setting ulang base path seryp
+                        AlertBox.display("Failed to find Database", "Setting ulang path untuk \"Seryp Base Path\"");
+                        DirectoryChooser directoryChooser1 = new DirectoryChooser();
+                        File fileSerypBasePath = directoryChooser1.showDialog(new Stage());
+
+                        if (fileSerypBasePath == null) { // jika user tidak memilih directory dan hanya menutup showDialog
+                            Stage stage = (Stage) lblStatus.getScene().getWindow();
+                            stage.close();
+                        } else {
+                            File createDir = new File(fileSerypBasePath.getAbsolutePath() + File.separator + "Seryp Files");
+                            AlertBox.display("Failed to find Database", "Path baru :  \"" + createDir.getAbsolutePath() + "\"");
+
+                            if (createDir.mkdir()) {
+                                File createDirFotoProfil = new File(createDir.getAbsoluteFile() + File.separator + "Foto profil");
+                                File createdDirBackup = new File(createDir.getAbsoluteFile() + File.separator + "Backup");
+
+                                if (createDirFotoProfil.mkdir() && createdDirBackup.mkdir()) {
+                                    if (identitasToko != null) {
+                                        identitasToko.setSerypBasePath(createDir.getAbsolutePath());
+
+                                        try {
+                                            // membuat database pada saat semua directory terbuat
+                                            getUtil().createDatabase();
+
+                                            // Insert data yang sudah di read dari csv
+                                            new IdentitasTokoDao().add(identitasToko);
+                                            new UserDao().addAll(userList);
+                                            new BarangDao().addAll(barangList);
+                                            new KerusakanDao().addAll(kerusakanList);
+                                            new PelangganDao().addAll(pelangganList);
+                                            new ServisDao().addAll(servisList);
+                                            new DetailKerusakanDao().addAll(detailKerusakanList);
+
+                                            System.out.println( "berahasil");
+                                        } catch (SQLException e) {
+                                            AlertBox.display("Failed to find Database", e.getMessage());
+                                            e.printStackTrace();
+                                        }
+
+                                        AlertBox.display("Failed to find Database", "Berhasil me-restore database. \n Silahkan tutup dan buka ulang aplikasi Seryp");
+                                        Stage stage = (Stage) lblStatus.getScene().getWindow();
+                                        stage.close();
+                                    }
+                                }
+                            }
+                        }
+                    } else { // Instalasi dengan database kosong
+                        AlertBox.display("Failed to find Database", "Proses instalasi akan dilakukan!");
+                        getWindowControl().moveToScene(lblStatus, "instalasi");
+                    }
                 }
             });
         }

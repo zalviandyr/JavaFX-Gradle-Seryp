@@ -33,6 +33,30 @@ public class DetailKerusakanDao {
         preparedStatement.executeUpdate();
     }
 
+    public void addAll(List<DetailKerusakan> detailKerusakanList) throws SQLException {
+        if (detailKerusakanList != null) {
+            String sql = "INSERT INTO detail_kerusakan VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = CON.prepareStatement(sql);
+
+            for (DetailKerusakan detailKerusakan : detailKerusakanList) {
+                preparedStatement.setString(1, detailKerusakan.getNoFaktur());
+                preparedStatement.setString(2, detailKerusakan.getIdKerusakan());
+                // jika barang tidak ada
+                if (detailKerusakan.getIdBarang().equals("null")) {
+                    preparedStatement.setNull(3, Types.VARCHAR);
+                } else {
+                    preparedStatement.setString(3, detailKerusakan.getIdBarang());
+                }
+
+                preparedStatement.setInt(4, detailKerusakan.getUnit());
+                preparedStatement.setInt(5, detailKerusakan.getTotalEstimasiMin());
+                preparedStatement.setInt(6, detailKerusakan.getTotalEstimasiMax());
+
+                preparedStatement.executeUpdate();
+            }
+        }
+    }
+
     public List<DetailKerusakan> get(String noFaktur) throws SQLException {
         List<DetailKerusakan> list = null;
         String sql = "SELECT * FROM detail_kerusakan WHERE noFaktur = ?";

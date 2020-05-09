@@ -56,7 +56,11 @@ public class UserDao {
             user.setTanggalLahir(resultSet.getDate(7).toLocalDate());
             user.setAlamat(resultSet.getString(8));
             user.setStatusUser(resultSet.getString(9));
-            user.setLastLogin(resultSet.getDate(10).toLocalDate());
+            try {
+                user.setLastLogin(resultSet.getDate(10).toLocalDate());
+            } catch (NullPointerException e) {
+                user.setLastLogin(null);
+            }
             user.setCreated(resultSet.getDate(11).toLocalDate());
 
             list.add(user);
@@ -66,8 +70,8 @@ public class UserDao {
     }
 
     public void add(User user) throws SQLException {
-        String sql = "INSERT INTO user(username, password, noHp, nama, fotoProfil, jekel, tanggalLahir, alamat, statusUser, created)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO user(username, password, noHp, nama, fotoProfil, jekel, tanggalLahir, alamat, statusUser, lastLogin, created)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement preparedStatement = CONN.prepareStatement(sql);
         preparedStatement.setString(1, user.getUsername());
@@ -79,9 +83,35 @@ public class UserDao {
         preparedStatement.setDate(7, Date.valueOf(user.getTanggalLahir()));
         preparedStatement.setString(8, user.getAlamat());
         preparedStatement.setString(9, user.getStatusUser());
-        preparedStatement.setDate(10, Date.valueOf(user.getCreated()));
+        preparedStatement.setDate(10, Date.valueOf(user.getLastLogin()));
+        preparedStatement.setDate(11, Date.valueOf(user.getCreated()));
 
         preparedStatement.executeUpdate();
+    }
+
+    public void addAll(List<User> userList) throws SQLException {
+        if (userList != null) {
+            String sql = "INSERT INTO user(username, password, noHp, nama, fotoProfil, jekel, tanggalLahir, alamat, statusUser, lastLogin, created)" +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement preparedStatement = CONN.prepareStatement(sql);
+
+            for (User user : userList) {
+                preparedStatement.setString(1, user.getUsername());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(3, user.getNoHp());
+                preparedStatement.setString(4, user.getNama());
+                preparedStatement.setString(5, user.getFotoProfil());
+                preparedStatement.setString(6, user.getJekel());
+                preparedStatement.setDate(7, Date.valueOf(user.getTanggalLahir()));
+                preparedStatement.setString(8, user.getAlamat());
+                preparedStatement.setString(9, user.getStatusUser());
+                preparedStatement.setDate(10, Date.valueOf(user.getLastLogin()));
+                preparedStatement.setDate(11, Date.valueOf(user.getCreated()));
+
+                preparedStatement.executeUpdate();
+            }
+        }
     }
 
     public void update(User user) throws SQLException {

@@ -239,7 +239,7 @@ public class UserController extends SerypUtil implements Initializable {
                     cleanComboBoxStatusUser();
                     AlertBox.display("Berhasil Update", "Berhasil update data");
                 } catch (SQLException | NullPointerException e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                     AlertBox.display("Gagal Update", "Gagal untuk mengupdate data");
                 }
             }
@@ -271,6 +271,7 @@ public class UserController extends SerypUtil implements Initializable {
                     user.setTanggalLahir(tanggalLahir);
                     user.setAlamat(alamat);
                     user.setStatusUser(statusKaryawan);
+                    user.setLastLogin(LocalDate.now());
                     user.setCreated(LocalDate.now());
 
                     userDao.add(user);

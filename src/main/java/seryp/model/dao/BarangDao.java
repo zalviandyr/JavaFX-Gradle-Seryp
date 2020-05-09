@@ -72,6 +72,24 @@ public class BarangDao {
         preparedStatement.executeUpdate();
     }
 
+    public void addAll(List<Barang> barangList) throws SQLException {
+        if (barangList != null) {
+            String sql = "INSERT INTO barang VALUES(?, ?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = CONN.prepareStatement(sql);
+
+            for (Barang barang : barangList) {
+                preparedStatement.setString(1, barang.getIdBarang());
+                preparedStatement.setString(2, barang.getNama());
+                preparedStatement.setString(3, barang.getDeskripsi());
+                preparedStatement.setInt(4, barang.getStok());
+                preparedStatement.setInt(5, barang.getHarga());
+                preparedStatement.setString(6, barang.getStatus());
+
+                preparedStatement.executeUpdate();
+            }
+        }
+    }
+
     public void update(Barang barang) throws SQLException {
         String sql = "UPDATE barang SET nama = ?, deskripsi = ?, stok = ?, harga = ?, status = ? WHERE idBarang = ?";
         PreparedStatement preparedStatement = CONN.prepareStatement(sql);

@@ -30,7 +30,7 @@ public class InstalasiDao {
         String sql = "CREATE TABLE `identitas_toko` (" +
                 "`nama` varchar(100) NOT NULL," +
                 "`alamat` text NOT NULL," +
-                "`fotoProfilPath` text NOT NULL" +
+                "`serypBasePath` text NOT NULL" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
         CONN.createStatement().executeUpdate(sql);
     }

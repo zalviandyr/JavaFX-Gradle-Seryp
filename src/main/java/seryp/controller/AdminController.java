@@ -262,13 +262,13 @@ public class AdminController extends SerypUtil implements Initializable {
                     List<Servis> servisList = new ServisDao().getAll();
                     List<DetailKerusakan> detailKerusakanList = new DetailKerusakanDao().getAll();
 
-                    getFileHandler().backupIdentitasTokoCsv(identitasToko, new File(file + File.separator + "Seryp backup - IDENTITAS_TOKO - " + LocalDate.now() + ".csv"));
-                    getFileHandler().backupUserCsv(userList, new File(file + File.separator + "Seryp backup - USER - " + LocalDate.now() + ".csv"));
-                    getFileHandler().backupBarangCsv(barangList, new File(file + File.separator + "Seryp backup - BARANG - " + LocalDate.now() + ".csv"));
-                    getFileHandler().backupKerusakanCsv(kerusakanList, new File(file + File.separator + "Seryp backup - KERUSAKAN - " + LocalDate.now() + ".csv"));
-                    getFileHandler().backupPelangganCsv(pelangganList, new File(file + File.separator + "Seryp backup - PELANGGAN - " + LocalDate.now() + ".csv"));
-                    getFileHandler().backupServisCsv(servisList, new File(file + File.separator + "Seryp backup - SERVIS - " + LocalDate.now() + ".csv"));
-                    getFileHandler().backupDetailKerusakanCsv(detailKerusakanList, new File(file + File.separator + "Seryp backup - DETAIL_KERUSAKAN - " + LocalDate.now() + ".csv"));
+                    getFileHandler().backupIdentitasTokoSerypBk(identitasToko, new File(file + File.separator + "Seryp backup - IDENTITAS_TOKO - " + LocalDate.now() + ".serypBk"));
+                    getFileHandler().backupUserSerypBk(userList, new File(file + File.separator + "Seryp backup - USER - " + LocalDate.now() + ".serypBk"));
+                    getFileHandler().backupBarangSerypBk(barangList, new File(file + File.separator + "Seryp backup - BARANG - " + LocalDate.now() + ".serypBk"));
+                    getFileHandler().backupKerusakanSerypBk(kerusakanList, new File(file + File.separator + "Seryp backup - KERUSAKAN - " + LocalDate.now() + ".serypBk"));
+                    getFileHandler().backupPelangganSerypBk(pelangganList, new File(file + File.separator + "Seryp backup - PELANGGAN - " + LocalDate.now() + ".serypBk"));
+                    getFileHandler().backupServisSerypBk(servisList, new File(file + File.separator + "Seryp backup - SERVIS - " + LocalDate.now() + ".serypBk"));
+                    getFileHandler().backupDetailKerusakanSerypBk(detailKerusakanList, new File(file + File.separator + "Seryp backup - DETAIL_KERUSAKAN - " + LocalDate.now() + ".serypBk"));
 
                     AlertBox.display("Berhasil Backup", "Hasil backup tersimpan di \"" + pathBackup + "\"");
                 } catch (SQLException e) {

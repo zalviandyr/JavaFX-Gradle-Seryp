@@ -75,6 +75,23 @@ public class PelangganDao {
         preparedStatement.executeUpdate();
     }
 
+    public void addAll(List<Pelanggan> pelangganList) throws SQLException {
+        if (pelangganList != null) {
+            String sql = "INSERT INTO pelanggan VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = CONN.prepareStatement(sql);
+
+            for (Pelanggan pelanggan : pelangganList) {
+                preparedStatement.setString(1, pelanggan.getIdPelanggan());
+                preparedStatement.setString(2, pelanggan.getNama());
+                preparedStatement.setString(3, pelanggan.getAlamat());
+                preparedStatement.setString(4, pelanggan.getNoHp());
+                preparedStatement.setString(5, pelanggan.getJekel());
+
+                preparedStatement.executeUpdate();
+            }
+        }
+    }
+
     public void update(Pelanggan pelanggan) throws SQLException {
         String sql = "UPDATE pelanggan SET nama = ?, alamat = ?, noHp = ?, jekel = ? WHERE idPelanggan = ?";
         PreparedStatement preparedStatement = CONN.prepareStatement(sql);

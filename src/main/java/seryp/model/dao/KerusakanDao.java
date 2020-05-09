@@ -75,6 +75,23 @@ public class KerusakanDao {
         preparedStatement.executeUpdate();
     }
 
+    public void addAll(List<Kerusakan> kerusakanList) throws SQLException {
+        if (kerusakanList != null) {
+            String sql = "INSERT INTO kerusakan VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = CONN.prepareStatement(sql);
+
+            for (Kerusakan kerusakan : kerusakanList) {
+                preparedStatement.setString(1, kerusakan.getIdKerusakan());
+                preparedStatement.setString(2, kerusakan.getNama());
+                preparedStatement.setString(3, kerusakan.getDeskripsi());
+                preparedStatement.setInt(4, kerusakan.getEstimasiMin());
+                preparedStatement.setInt(5, kerusakan.getEstimasiMax());
+
+                preparedStatement.executeUpdate();
+            }
+        }
+    }
+
     public void update(Kerusakan kerusakan) throws SQLException {
         String sql = "UPDATE kerusakan SET nama = ?, deskripsi = ?, estimasiMin = ?, estimasiMax = ? WHERE idKerusakan = ?";
         PreparedStatement preparedStatement = CONN.prepareStatement(sql);

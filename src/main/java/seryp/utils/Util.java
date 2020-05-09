@@ -1,5 +1,8 @@
 package seryp.utils;
 
+import seryp.model.dao.InstalasiDao;
+
+import java.sql.SQLException;
 import java.util.List;
 
 public class Util {
@@ -23,5 +26,16 @@ public class Util {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void createDatabase() throws SQLException {
+        InstalasiDao instalasiDao = new InstalasiDao();
+        instalasiDao.createTableBarang();
+        instalasiDao.createTableIdentitasToko();
+        instalasiDao.createTableKerusakan();
+        instalasiDao.createTablePelanggan();
+        instalasiDao.createTableUser();
+        instalasiDao.createTableServis();
+        instalasiDao.createTableDetailKerusakan();
     }
 }

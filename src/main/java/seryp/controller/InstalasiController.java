@@ -63,27 +63,12 @@ public class InstalasiController extends SerypUtil implements Initializable {
         txtPassword2.setVisible(false);
     }
 
-    void createDatabaseSeryp() {
-        InstalasiDao instalasiDao = new InstalasiDao();
-        try {
-            instalasiDao.createTableBarang();
-            instalasiDao.createTableIdentitasToko();
-            instalasiDao.createTableKerusakan();
-            instalasiDao.createTablePelanggan();
-            instalasiDao.createTableUser();
-            instalasiDao.createTableServis();
-            instalasiDao.createTableDetailKerusakan();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     @FXML
     void serypBasePathAction() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File file = directoryChooser.showDialog(new Stage());
 
-        // path img yang akan dibuat dan disimpan ke database
+        // path yang akan dibuat dan disimpan ke database
         if (file != null) {
             String basePath = file.getAbsolutePath() + File.separator + "Seryp Files";
             txtAreaSerypBasePath.setText(basePath);
@@ -145,12 +130,13 @@ public class InstalasiController extends SerypUtil implements Initializable {
             user.setTanggalLahir(tanggalLahir);
             user.setAlamat(alamat);
             user.setStatusUser("Admin");
+            user.setLastLogin(LocalDate.now());
             user.setCreated(LocalDate.now());
 
             boolean konfirmasi = ConfirmBox.display("Konfirmasi Data", "Anda yakin ?\nPeriksa kembali data yang telah diinputkan!");
             if (konfirmasi) {
                 // create database seryp
-                createDatabaseSeryp();
+                getUtil().createDatabase();
 
                 // create dir serypBasePath
                 File file = new File(serypBasePath);

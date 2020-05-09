@@ -109,6 +109,28 @@ public class ServisDao {
         preparedStatement.executeUpdate();
     }
 
+    public void addAll(List<Servis> servisList) throws SQLException {
+        if (servisList != null) {
+            String sql = "INSERT INTO servis VALUES (?, ?, ?, ?, ?, ? ,? ,?, ?, ?)";
+            PreparedStatement preparedStatement = CONN.prepareStatement(sql);
+
+            for (Servis servis : servisList) {
+                preparedStatement.setString(1, servis.getNoFaktur());
+                preparedStatement.setString(2, servis.getUsername());
+                preparedStatement.setString(3, servis.getIdPelanggan());
+                preparedStatement.setString(4, servis.getMerkLabel());
+                preparedStatement.setDate(5, Date.valueOf(servis.getTanggalHariIni()));
+                preparedStatement.setDate(6, Date.valueOf(servis.getBatasHari()));
+                preparedStatement.setBoolean(7, servis.isStatusDP());
+                preparedStatement.setInt(8, servis.getUangDP());
+                preparedStatement.setBoolean(9, servis.isStatusPembayaran());
+                preparedStatement.setInt(10, servis.getUangPembayaran());
+
+                preparedStatement.executeUpdate();
+            }
+        }
+    }
+
     public void setPembayaranDP(String noFaktur, int jumlahUang) throws SQLException {
         String sql = "UPDATE servis SET statusDP = ?, uangDP = ? WHERE noFaktur = ?";
         PreparedStatement preparedStatement = CONN.prepareStatement(sql);
