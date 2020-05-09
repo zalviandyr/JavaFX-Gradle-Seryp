@@ -1,7 +1,6 @@
 package seryp.controller;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,7 +8,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import seryp.model.User;
 import seryp.model.dao.UserDao;
@@ -26,128 +24,87 @@ public class LoginController extends SerypUtil implements Initializable {
     public Button btnLogin;
     public Button btnRemoveRedEye;
     public Button btnLupaPassword;
-    public TextField inputUsername;
-    public PasswordField inputPassword;
-    public TextField inputPassword2;
+    public TextField txtUsername;
+    public PasswordField txtPassword;
+    public TextField txtPassword2;
     public Label lblAlert;
     private UserDao userDao;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        init();
-        btnRemoveRedEyeAction();
-        btnLoginAction();
-        btnLupaPasswordAction();
-        inputPasswordAction();
-        inputActionError(inputUsername, inputPassword);
-    }
-
-    private void init() {
         // instance required object
         userDao = new UserDao();
 
         // set inputPassword2 hidden
-        inputPassword2.setVisible(false);
+        txtPassword2.setVisible(false);
+
+        // set text field normal action
+        getFieldControl().setTextFieldNormalAction(txtUsername, txtPassword);
 
         // init topbar
         getWindowControl().setTopBar(topBar);
     }
 
-    private void btnRemoveRedEyeAction() {
-        btnRemoveRedEye.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (!inputPassword.getText().equals("")) {
-                    String password = inputPassword.getText();
-                    // hidden password field
-                    inputPassword.setVisible(false);
+    @FXML
+    void btnRemoveRedEyePressed() {
+        if (!txtPassword.getText().equals("")) {
+            String password = txtPassword.getText();
+            // hidden password field
+            txtPassword.setVisible(false);
 
-                    // show text field password
-                    inputPassword2.setText(password);
-                    inputPassword2.setVisible(true);
-                }
-            }
-        });
-
-        btnRemoveRedEye.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                String password = inputPassword2.getText();
-                // hidden text field password
-                inputPassword2.setVisible(false);
-
-                // show password field
-                inputPassword.setText(password);
-                inputPassword.setVisible(true);
-            }
-        });
-    }
-
-    private void btnLoginAction() {
-        btnLogin.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                loginAction();
-            }
-        });
-    }
-
-    private void btnLupaPasswordAction() {
-        btnLupaPassword.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                getWindowControl().moveToScene(btnLupaPassword, "lupa password");
-            }
-        });
-    }
-
-    // Set TextField shape to normal mode
-    private void inputActionError(TextField... textFields) {
-        for (TextField textField : textFields) {
-            textField.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    textField.getStyleClass().remove("seryp-text-field-error");
-                }
-            });
+            // show text field password
+            txtPassword2.setText(password);
+            txtPassword2.setVisible(true);
         }
     }
 
-    private void inputPasswordAction() {
-        inputPassword.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-                    loginAction();
-                }
-            }
-        });
+    @FXML
+    void btnRemoveRedEyeReleased() {
+        String password = txtPassword2.getText();
+        // hidden text field password
+        txtPassword2.setVisible(false);
+
+        // show password field
+        txtPassword.setText(password);
+        txtPassword.setVisible(true);
     }
 
-    void setErrorField() {
-        // Set TextField shape to error mode
-        inputUsername.getStyleClass().add("seryp-text-field-error");
-        inputPassword.getStyleClass().add("seryp-text-field-error");
-        lblAlert.setText("Invalid Username and Password");
+    @FXML
+    void btnLoginAction() {
+        loginAction();
+    }
+
+    @FXML
+    void btnLupaPasswordAction() {
+        getWindowControl().moveToScene(btnLupaPassword, "lupa password");
+    }
+
+    // Set TextField shape to normal mode
+    @FXML
+    void txtPasswordKeyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            loginAction();
+        }
     }
 
     void loginAction() {
-
-        String username = inputUsername.getText();
-        String password = inputPassword.getText();
+        String username = txtUsername.getText();
+        String password = txtPassword.getText();
 
         // Check if TextField is not empty
         if (username.equals("") || password.equals("")) {
-            setErrorField();
+            getFieldControl().setTextFieldError(txtUsername, txtPassword);
+            lblAlert.setText("Invalid Username and Password");
         } else {
             try {
-                User user = userDao.get(inputUsername.getText());
+                User user = userDao.get(txtUsername.getText());
 
                 if (user == null) {
-                    setErrorField();
+                    getFieldControl().setTextFieldError(txtUsername, txtPassword);
+                    lblAlert.setText("Invalid Username and Password");
                 } else {
                     // cek password
-                    password = getUtil().md5Hash(inputPassword.getText());
+                    password = getUtil().md5Hash(txtPassword.getText());
                     if (user.getPassword().equals(password)) {
                         // update lastLogin
                         userDao.updateLastLogin(user.getUsername(), LocalDate.now());
@@ -162,7 +119,8 @@ public class LoginController extends SerypUtil implements Initializable {
                             AlertBox.display("Login Gagal", "Maaf anda terdaftar sebagai \"Karyawan Tidak Aktif\".\n Mohon hubungi Admin untuk menyelesaikan masalah.");
                         }
                     } else {
-                        setErrorField();
+                        getFieldControl().setTextFieldError(txtUsername, txtPassword);
+                        lblAlert.setText("Invalid Username and Password");
                     }
 
                 }

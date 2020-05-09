@@ -287,13 +287,7 @@ public class ServiceController extends SerypUtil implements Initializable {
 
     void setComboBoxKerusakan() {
         try {
-            ResultSet resultSet = kerusakanDao.searchAll();
-
-            ObservableList<Kerusakan> observableList = FXCollections.observableArrayList();
-
-            while (resultSet.next()) {
-                observableList.add(new Kerusakan(resultSet.getString(1), resultSet.getString(2)));
-            }
+            ObservableList<Kerusakan> observableList = kerusakanDao.searchAll();
 
             Callback<ListView<Kerusakan>, ListCell<Kerusakan>> callback = new Callback<ListView<Kerusakan>, ListCell<Kerusakan>>() {
                 @Override
@@ -323,13 +317,7 @@ public class ServiceController extends SerypUtil implements Initializable {
 
     void setComboBoxKomponenDiganti() {
         try {
-            ResultSet resultSet = barangDao.searchAll();
-
-            ObservableList<Barang> observableList = FXCollections.observableArrayList();
-
-            while (resultSet.next()) {
-                observableList.add(new Barang(resultSet.getString(1), resultSet.getString(2)));
-            }
+            ObservableList<Barang> observableList = barangDao.searchAll();
 
             Callback<ListView<Barang>, ListCell<Barang>> callback = new Callback<ListView<Barang>, ListCell<Barang>>() {
                 @Override

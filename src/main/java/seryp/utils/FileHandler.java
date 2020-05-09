@@ -6,6 +6,7 @@ import seryp.model.dao.IdentitasTokoDao;
 import java.io.*;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,8 +98,9 @@ public class FileHandler {
         }
     }
 
-    public void backupIdentitasTokoSerypBk(IdentitasToko identitasToko, File file) {
+    public void backupIdentitasTokoSerypBk(IdentitasToko identitasToko, String path) {
         try {
+            File file = new File(path + File.separator + "Seryp backup - IDENTITAS_TOKO - " + LocalDate.now() + ".serypBk");
             PrintWriter printWriter = new PrintWriter(file);
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(identitasToko.getNamaToko()).append('|');
@@ -135,8 +137,9 @@ public class FileHandler {
         return identitasToko;
     }
 
-    public void backupUserSerypBk(List<User> userList, File file) {
+    public void backupUserSerypBk(List<User> userList, String path) {
         try {
+            File file = new File(path + File.separator + "Seryp backup - USER - " + LocalDate.now() + ".serypBk");
             PrintWriter printWriter = new PrintWriter(file);
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -195,8 +198,9 @@ public class FileHandler {
         }
     }
 
-    public void backupBarangSerypBk(List<Barang> barangList, File file) {
+    public void backupBarangSerypBk(List<Barang> barangList, String path) {
         try {
+            File file = new File(path + File.separator + "Seryp backup - BARANG - " + LocalDate.now() + ".serypBk");
             PrintWriter printWriter = new PrintWriter(file);
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -245,8 +249,9 @@ public class FileHandler {
         }
     }
 
-    public void backupKerusakanSerypBk(List<Kerusakan> kerusakanList, File file) {
+    public void backupKerusakanSerypBk(List<Kerusakan> kerusakanList, String path) {
         try {
+            File file = new File(path + File.separator + "Seryp backup - KERUSAKAN - " + LocalDate.now() + ".serypBk");
             PrintWriter printWriter = new PrintWriter(file);
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -294,8 +299,9 @@ public class FileHandler {
         }
     }
 
-    public void backupPelangganSerypBk(List<Pelanggan> pelangganList, File file) {
+    public void backupPelangganSerypBk(List<Pelanggan> pelangganList, String path) {
         try {
+            File file = new File(path + File.separator + "Seryp backup - PELANGGAN - " + LocalDate.now() + ".serypBk");
             PrintWriter printWriter = new PrintWriter(file);
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -343,8 +349,9 @@ public class FileHandler {
         }
     }
 
-    public void backupServisSerypBk(List<Servis> servisList, File file) {
+    public void backupServisSerypBk(List<Servis> servisList, String path) {
         try {
+            File file = new File(path + File.separator + "Seryp backup - SERVIS - " + LocalDate.now() + ".serypBk");
             PrintWriter printWriter = new PrintWriter(file);
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -401,8 +408,9 @@ public class FileHandler {
         }
     }
 
-    public void backupDetailKerusakanSerypBk(List<DetailKerusakan> detailKerusakanList, File file) {
+    public void backupDetailKerusakanSerypBk(List<DetailKerusakan> detailKerusakanList, String path) {
         try {
+            File file = new File(path + File.separator + "Seryp backup - DETAIL_KERUSAKAN - " + LocalDate.now() + ".serypBk");
             PrintWriter printWriter = new PrintWriter(file);
             StringBuilder stringBuilder = new StringBuilder();
 

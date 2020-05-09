@@ -1,6 +1,7 @@
 package seryp;
 
 public class Launcher {
+    // TODO buat validasi bahwa semua field terisi
     // TODO setting ulang font
     // TODO encrypt file .csv
     // TODO buat fitur notifikasi karyawan login dan stok jika kurang dari 5

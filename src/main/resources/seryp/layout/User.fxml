@@ -138,7 +138,7 @@
                                     <RowConstraints minHeight="1.0" prefHeight="1.0" valignment="TOP" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <Button fx:id="btnCari" mnemonicParsing="false" prefHeight="28.0" prefWidth="191.0" text="Cari" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <Button fx:id="btnCari" mnemonicParsing="false" onAction="#btnCariAction" prefHeight="28.0" prefWidth="191.0" text="Cari" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <styleClass>
                                           <String fx:value="seryp-round" />
                                           <String fx:value="seryp-btn-primary" />
@@ -150,7 +150,7 @@
                                        <padding>
                                           <Insets left="30.0" />
                                        </padding></TextField>
-                                    <ComboBox fx:id="cboResult" prefHeight="25.0" prefWidth="439.0" styleClass="seryp-round" GridPane.rowIndex="3" />
+                                    <ComboBox fx:id="cboResult" onAction="#cboResultAction" prefHeight="25.0" prefWidth="439.0" styleClass="seryp-round" GridPane.rowIndex="3" />
                                     <ImageView fitHeight="27.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                                        <image>
                                           <Image url="@../assets/icon/baseline_search_black_18dp.png" />
@@ -163,7 +163,7 @@
                               <Insets top="-20.0" />
                            </VBox.margin>
                         </TitledPane>
-                        <ToggleButton fx:id="btnCariUser" minWidth="200.0" mnemonicParsing="false" styleClass="seryp-btn-primary" text="Cari User" />
+                        <ToggleButton fx:id="toggleBtnCariUser" minWidth="200.0" mnemonicParsing="false" onAction="#toggleBtnCariUserAction" styleClass="seryp-btn-primary" text="Cari User" />
                         <GridPane hgap="10.0" vgap="5.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" />
@@ -199,19 +199,19 @@
                               <RadioButton fx:id="rbPerempuan" mnemonicParsing="false" text="Perempuan" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
                               <Label text="Alamat" GridPane.rowIndex="6" />
                               <TextArea fx:id="txtAreaAlamat" prefHeight="200.0" prefWidth="158.0" styleClass="seryp-text-area" wrapText="true" GridPane.columnSpan="3" GridPane.rowIndex="7" />
-                              <Button fx:id="btnUpdate" mnemonicParsing="false" prefHeight="28.0" prefWidth="241.0" text="Update" GridPane.rowIndex="10">
+                              <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#btnUpdateAction" prefHeight="28.0" prefWidth="241.0" text="Update" GridPane.rowIndex="10">
                                  <styleClass>
                                     <String fx:value="seryp-round" />
                                     <String fx:value="seryp-btn-primary" />
                                  </styleClass>
                               </Button>
-                              <Button fx:id="btnAdd" mnemonicParsing="false" prefHeight="28.0" prefWidth="223.0" text="Add" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                              <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#btnAddAction" prefHeight="28.0" prefWidth="223.0" text="Add" GridPane.columnIndex="1" GridPane.rowIndex="10">
                                  <styleClass>
                                     <String fx:value="seryp-round" />
                                     <String fx:value="seryp-btn-primary" />
                                  </styleClass>
                               </Button>
-                              <Button fx:id="btnDelete" mnemonicParsing="false" prefHeight="28.0" prefWidth="223.0" text="Delete" GridPane.columnIndex="2" GridPane.rowIndex="10">
+                              <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#btnDeleteAction" prefHeight="28.0" prefWidth="223.0" text="Delete" GridPane.columnIndex="2" GridPane.rowIndex="10">
                                  <styleClass>
                                     <String fx:value="seryp-round" />
                                     <String fx:value="seryp-btn-primary" />
@@ -223,18 +223,18 @@
                               <ButtonBar buttonMinWidth="60.0" GridPane.columnIndex="2" GridPane.rowIndex="9">
                                 <buttons>
                                     <Label fx:id="lblFile" maxWidth="84.0" minWidth="50.0" prefHeight="16.0" prefWidth="107.0" text="File" />
-                                  <Button fx:id="btnFileChoose" alignment="CENTER_RIGHT" mnemonicParsing="false" styleClass="seryp-round" text="File Choose" />
+                                  <Button fx:id="btnFileChoose" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#btnFileChooseAction" styleClass="seryp-round" text="File Choose" />
                                 </buttons>
                               </ButtonBar>
                               <Label text="Foto User" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-                              <Button fx:id="btnBack" mnemonicParsing="false" prefHeight="28.0" prefWidth="667.0" text="Back" GridPane.columnSpan="3" GridPane.rowIndex="11">
+                              <Button fx:id="btnBack" mnemonicParsing="false" onAction="#btnBackAction" prefHeight="28.0" prefWidth="667.0" text="Back" GridPane.columnSpan="3" GridPane.rowIndex="11">
                                  <styleClass>
                                     <String fx:value="seryp-round" />
                                     <String fx:value="seryp-btn-primary" />
                                  </styleClass>
                               </Button>
                               <PasswordField fx:id="txtPassword" promptText="password" styleClass="seryp-round" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-                              <Button fx:id="btnRemoveRedEye" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" styleClass="seryp-btn-icon" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                              <Button fx:id="btnRemoveRedEye" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onMousePressed="#btnRemoveRedEyePressed" onMouseReleased="#btnRemoveRedEyeReleased" styleClass="seryp-btn-icon" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="150.0" />
                                  </GridPane.margin>

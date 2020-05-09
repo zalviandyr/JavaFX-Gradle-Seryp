@@ -6,10 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
@@ -241,7 +238,30 @@ public class WindowControl {
         }
     }
 
-    public void setSettingBar(VBox settingBar, IdentitasToko identitasToko) {
+    public void setPaneSetting(ToggleButton toggleButton, TitledPane titledPane, VBox settingBar) {
+        // set pane setting animated and unexpanded
+        titledPane.setAnimated(true);
+        titledPane.setExpanded(false);
+
+        toggleButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (toggleButton.isSelected()) {
+                    // change style button
+                    toggleButton.getStyleClass().remove("seryp-btn-primary");
+                    toggleButton.getStyleClass().add("seryp-btn-secondary");
+                    titledPane.setExpanded(true);
+                } else {
+                    // change style button
+                    toggleButton.getStyleClass().remove("seryp-btn-secondary");
+                    toggleButton.getStyleClass().add("seryp-btn-primary");
+                    titledPane.setExpanded(false);
+                }
+            }
+        });
+
+
+        // setting bar
         TextField txtNamaTokoNode = null;
         TextArea txtAlamatTokoNode = null;
         TextArea txtSerypBasePathNode = null;
@@ -270,10 +290,15 @@ public class WindowControl {
         TextArea txtSerypBasePath = txtSerypBasePathNode;
         TextArea txtAlamatToko = txtAlamatTokoNode;
 
-        txtNamaToko.setText(identitasToko.getNamaToko());
-        txtSerypBasePath.setText(identitasToko.getSerypBasePath());
-        txtSerypBasePath.setEditable(false);
-        txtAlamatToko.setText(identitasToko.getAlamat());
+        try {
+            IdentitasToko identitasToko = new IdentitasTokoDao().get();
+            txtNamaToko.setText(identitasToko.getNamaToko());
+            txtSerypBasePath.setText(identitasToko.getSerypBasePath());
+            txtSerypBasePath.setEditable(false);
+            txtAlamatToko.setText(identitasToko.getAlamat());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         btnOkSetting.setOnAction(new EventHandler<ActionEvent>() {
             @Override

@@ -134,7 +134,7 @@
                                     <RowConstraints minHeight="1.0" prefHeight="1.0" valignment="TOP" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <Button fx:id="btnCari" mnemonicParsing="false" prefHeight="28.0" prefWidth="191.0" text="Cari" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <Button fx:id="btnCari" mnemonicParsing="false" onAction="#btnCariAction" prefHeight="28.0" prefWidth="191.0" text="Cari" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <styleClass>
                                           <String fx:value="seryp-round" />
                                           <String fx:value="seryp-btn-primary" />
@@ -149,7 +149,7 @@
                                        <padding>
                                           <Insets left="30.0" />
                                        </padding></TextField>
-                                    <ComboBox fx:id="cboResult" prefHeight="25.0" prefWidth="439.0" styleClass="seryp-round" GridPane.rowIndex="3" />
+                                    <ComboBox fx:id="cboResult" onAction="#cboResultAction" prefHeight="25.0" prefWidth="439.0" styleClass="seryp-round" GridPane.rowIndex="3" />
                                     <Label text="ID" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <TextField fx:id="txtId" styleClass="seryp-round" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <ImageView fitHeight="26.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
@@ -164,7 +164,7 @@
                               <Insets top="-20.0" />
                            </VBox.margin>
                         </TitledPane>
-                        <ToggleButton fx:id="btnCariBarang" minWidth="200.0" mnemonicParsing="false" styleClass="seryp-btn-primary" text="Cari Barang" VBox.vgrow="ALWAYS">
+                        <ToggleButton fx:id="toggleBtnCariBarang" minWidth="200.0" mnemonicParsing="false" onAction="#toggleBtnCariBarangAction" styleClass="seryp-btn-primary" text="Cari Barang" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -196,10 +196,10 @@
                               <TextField fx:id="txtHarga" styleClass="seryp-round" GridPane.rowIndex="5" />
                               <TextField fx:id="txtStock" styleClass="seryp-round" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                               <ComboBox fx:id="cboStatus" prefHeight="25.0" prefWidth="217.0" styleClass="seryp-round" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                              <Button fx:id="btnUpdate" mnemonicParsing="false" prefHeight="28.0" prefWidth="276.0" styleClass="seryp-btn-primary" text="Update" GridPane.rowIndex="6" />
-                              <Button fx:id="btnAdd" mnemonicParsing="false" prefHeight="28.0" prefWidth="225.0" styleClass="seryp-btn-primary" text="Add" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                              <Button fx:id="btnDelete" mnemonicParsing="false" prefHeight="25.0" prefWidth="205.0" styleClass="seryp-btn-primary" text="Delete" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                              <Button fx:id="btnBack" mnemonicParsing="false" prefHeight="28.0" prefWidth="678.0" styleClass="seryp-btn-primary" text="Back" GridPane.columnSpan="3" GridPane.rowIndex="7" />
+                              <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#btnUpdateAction" prefHeight="28.0" prefWidth="276.0" styleClass="seryp-btn-primary" text="Update" GridPane.rowIndex="6" />
+                              <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#btnAddAction" prefHeight="28.0" prefWidth="225.0" styleClass="seryp-btn-primary" text="Add" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#btnDeleteAction" prefHeight="25.0" prefWidth="205.0" styleClass="seryp-btn-primary" text="Delete" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                              <Button fx:id="btnBack" mnemonicParsing="false" onAction="#btnBackAction" prefHeight="28.0" prefWidth="678.0" styleClass="seryp-btn-primary" text="Back" GridPane.columnSpan="3" GridPane.rowIndex="7" />
                            </children>
                            <padding>
                               <Insets bottom="7.0" />

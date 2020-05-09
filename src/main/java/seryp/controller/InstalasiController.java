@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import seryp.model.IdentitasToko;
 import seryp.model.User;
 import seryp.model.dao.IdentitasTokoDao;
-import seryp.model.dao.InstalasiDao;
 import seryp.model.dao.UserDao;
 import seryp.utils.SerypUtil;
 import seryp.utils.boxes.AlertBox;
@@ -140,23 +139,23 @@ public class InstalasiController extends SerypUtil implements Initializable {
 
                 // create dir serypBasePath
                 File file = new File(serypBasePath);
-                file.mkdir();
+                if (file.mkdir()) {
+                    // create dir Foto profil
+                    File file1 = new File(serypBasePath + File.separator + "Foto profil");
+                    if (file1.mkdir()) {
+                        // create dir backup
+                        File file2 = new File(serypBasePath + File.separator + "Backup");
+                        if (file2.mkdir()) {
+                            IdentitasTokoDao identitasTokoDao = new IdentitasTokoDao();
+                            UserDao userDao = new UserDao();
+                            identitasTokoDao.add(identitasToko);
+                            userDao.add(user);
 
-                // create dir Foto profil
-                File file1 = new File(serypBasePath + File.separator + "Foto profil");
-                file1.mkdir();
-
-                // create dir backup
-                File file2 = new File(serypBasePath + File.separator + "Backup");
-                file2.mkdir();
-
-                IdentitasTokoDao identitasTokoDao = new IdentitasTokoDao();
-                UserDao userDao = new UserDao();
-                identitasTokoDao.add(identitasToko);
-                userDao.add(user);
-
-                AdminController.userLogin = user;
-                getWindowControl().moveToScene(btnKonfirmasi, "admin");
+                            AdminController.userLogin = user;
+                            getWindowControl().moveToScene(btnKonfirmasi, "admin");
+                        }
+                    }
+                }
             }
         } catch (SQLException | NullPointerException e) {
 //            e.printStackTrace();

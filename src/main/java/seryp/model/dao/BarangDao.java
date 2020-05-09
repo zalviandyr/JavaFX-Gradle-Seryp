@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import seryp.model.Barang;
 
 import java.sql.Connection;
@@ -55,9 +57,15 @@ public class BarangDao {
         return barangList;
     }
 
-    public ResultSet getAllId() throws SQLException {
+    public List<String> getAllId() throws SQLException {
         String sql = "SELECT RIGHT(idBarang, 3) FROM barang";
-        return CONN.createStatement().executeQuery(sql);
+        ResultSet resultSet = CONN.createStatement().executeQuery(sql);
+
+        List<String> list = new ArrayList<>();
+        while (resultSet.next()) {
+            list.add(resultSet.getString(1));
+        }
+        return list;
     }
 
     public void add(Barang barang) throws SQLException {
@@ -118,16 +126,28 @@ public class BarangDao {
         preparedStatement.executeUpdate();
     }
 
-    public ResultSet searchAll() throws SQLException {
+    public ObservableList<Barang> searchAll() throws SQLException {
         String sql = "SELECT idBarang, nama FROM barang";
-        return CONN.createStatement().executeQuery(sql);
+        ResultSet resultSet = CONN.createStatement().executeQuery(sql);
+
+        ObservableList<Barang> observableList = FXCollections.observableArrayList();
+        while (resultSet.next()) {
+            observableList.add(new Barang(resultSet.getString(1), resultSet.getString(2)));
+        }
+        return observableList;
     }
 
-    public ResultSet search(String keyword) throws SQLException {
+    public ObservableList<Barang> search(String keyword) throws SQLException {
         keyword = "%" + keyword + "%";
         String sql = "SELECT idBarang, nama FROM barang WHERE nama LIKE ?";
         PreparedStatement preparedStatement = CONN.prepareStatement(sql);
         preparedStatement.setString(1, keyword);
-        return preparedStatement.executeQuery();
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        ObservableList<Barang> observableList = FXCollections.observableArrayList();
+        while (resultSet.next()) {
+            observableList.add(new Barang(resultSet.getString(1), resultSet.getString(2)));
+        }
+        return observableList;
     }
 }
