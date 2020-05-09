@@ -97,12 +97,6 @@ public class FileHandler {
         }
     }
 
-    public void deleteFile() {
-        if (file != null) {
-            file.delete();
-        }
-    }
-
     public void backupIdentitasTokoSerypBk(IdentitasToko identitasToko, File file) {
         try {
             PrintWriter printWriter = new PrintWriter(file);

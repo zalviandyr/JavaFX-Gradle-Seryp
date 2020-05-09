@@ -185,6 +185,10 @@ public class BarangController extends SerypUtil implements Initializable {
                     cleanField();
                     cleanComboBoxResult();
                     cleanComboBoxStatus();
+
+                    // combo box harus di set ulang agar item-item selain yang di set tidak hilang
+                    setComboBoxStatus();
+
                     AlertBox.display("Berhasil Update", "Berhasil update data barang");
                 } catch (SQLException | NullPointerException e) {
                     AlertBox.display("Gagal Update", "Gagal update data barang");
@@ -217,6 +221,11 @@ public class BarangController extends SerypUtil implements Initializable {
 
                     barangDao.add(barang);
                     cleanField();
+                    cleanComboBoxStatus();
+
+                    // combo box harus di set ulang agar item-item selain yang di set tidak hilang
+                    setComboBoxStatus();
+
                     AlertBox.display("Berhasil Tambah", "Berhasil tambah data barang");
                 } catch (SQLException | NullPointerException e) {
                     AlertBox.display("Gagal Tambah", "Gagal tambah data barang");
@@ -293,8 +302,6 @@ public class BarangController extends SerypUtil implements Initializable {
                     txtHarga.setText(String.valueOf(barang.getHarga()));
                     txtStock.setText(String.valueOf(barang.getStok()));
 
-                    // combo box harus di set ulang agar item-item selain yang di set tidak hilang
-                    setComboBoxStatus();
                     cboStatus.setValue(barang.getStatus());
                 } catch (SQLException | NullPointerException e) {
                     System.out.println("Ada yang null nih!");

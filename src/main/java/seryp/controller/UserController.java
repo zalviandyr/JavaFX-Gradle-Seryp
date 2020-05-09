@@ -129,10 +129,10 @@ public class UserController extends SerypUtil implements Initializable {
 
                 try {
                     if (txtCariUser.getText().equals("")) {
-                        observableList = convertToObservableList(userDao.searchAll());
+                        observableList = userDao.searchAll();
                     } else {
                         String keyword = txtCariUser.getText();
-                        observableList = convertToObservableList(userDao.search(keyword));
+                        observableList = userDao.search(keyword);
                     }
 
                     setComboBoxResult(observableList);
@@ -208,28 +208,8 @@ public class UserController extends SerypUtil implements Initializable {
         btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                user = new User();
-
-                String username = txtUsername.getText();
-                String password = txtPassword.getText();
-                String noHandphone = getValidation().validateNoHandphone(txtNoHandphone.getText());
-                String nama = txtNama.getText();
-                String fotoProfil = getFileHandler().getPathCopy();
-                String jekel = getFieldControl().getTextSelectedRadios(rbLaki, rbPerempuan);
-                LocalDate tanggalLahir = datePickerTanggalLahir.getValue();
-                String alamat = txtAreaAlamat.getText();
-                String statusKaryawan = cboStatusUser.getValue();
-
                 try {
-                    user.setUsername(username);
-                    user.setPassword(password);
-                    user.setNoHp(noHandphone);
-                    user.setNama(nama);
-                    user.setFotoProfil(fotoProfil);
-                    user.setJekel(jekel);
-                    user.setTanggalLahir(tanggalLahir);
-                    user.setAlamat(alamat);
-                    user.setStatusUser(statusKaryawan);
+                    User user = updateAdd();
 
                     userDao.update(user);
                     if (getFileHandler().getFile() != null) // jika file null tidak akan mengkopi file
@@ -237,6 +217,10 @@ public class UserController extends SerypUtil implements Initializable {
                     cleanField();
                     cleanComboBoxResult();
                     cleanComboBoxStatusUser();
+
+                    // combo box harus di set ulang agar item-item selain yang di set tidak hilang
+                    setComboBoxStatusUser();
+
                     AlertBox.display("Berhasil Update", "Berhasil update data");
                 } catch (SQLException | NullPointerException e) {
 //                    e.printStackTrace();
@@ -250,35 +234,18 @@ public class UserController extends SerypUtil implements Initializable {
         btnAdd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                String username = txtUsername.getText();
-                String password = txtPassword.getText();
-                String noHandphone = getValidation().validateNoHandphone(txtNoHandphone.getText());
-                String nama = txtNama.getText();
-                String fotoProfil = getFileHandler().getPathCopy();
-                String jekel = getFieldControl().getTextSelectedRadios(rbLaki, rbPerempuan);
-                LocalDate tanggalLahir = datePickerTanggalLahir.getValue();
-                String alamat = txtAreaAlamat.getText();
-                String statusKaryawan = cboStatusUser.getValue();
-
                 try {
-                    user = new User();
-                    user.setUsername(username);
-                    user.setPassword(password);
-                    user.setNoHp(noHandphone);
-                    user.setNama(nama);
-                    user.setFotoProfil(fotoProfil);
-                    user.setJekel(jekel);
-                    user.setTanggalLahir(tanggalLahir);
-                    user.setAlamat(alamat);
-                    user.setStatusUser(statusKaryawan);
-                    user.setLastLogin(LocalDate.now());
-                    user.setCreated(LocalDate.now());
+                    User user = updateAdd();
 
                     userDao.add(user);
                     if (getFileHandler().getFile() != null) // jika file null tidak akan mengkopi file
                         getFileHandler().copyFileToPath(); // copy file
                     cleanField();
                     cleanComboBoxStatusUser();
+
+                    // combo box harus di set ulang agar item-item selain yang di set tidak hilang
+                    setComboBoxStatusUser();
+
                     AlertBox.display("Berhasil", "Penambahan user baru berhasil");
                 } catch (SQLException | NullPointerException e) {
 //                    e.printStackTrace();
@@ -305,7 +272,6 @@ public class UserController extends SerypUtil implements Initializable {
                             cleanField();
                             cleanComboBoxResult();
                             cleanComboBoxStatusUser();
-                            deleteFotoProfil();
                             AlertBox.display("Berhasil Delete", "Berhasil menghapus data");
                         }
                     }
@@ -315,10 +281,6 @@ public class UserController extends SerypUtil implements Initializable {
                 }
             }
         });
-    }
-
-    void deleteFotoProfil() {
-        getFileHandler().deleteFile();
     }
 
     private void btnBackAction() {
@@ -427,24 +389,41 @@ public class UserController extends SerypUtil implements Initializable {
         txtAreaAlamat.setText("");
     }
 
-    ObservableList<String> convertToObservableList(ResultSet resultSet) {
-        ObservableList<String> observableList = FXCollections.observableArrayList();
-        try {
-            while (resultSet.next()) {
-                observableList.add(resultSet.getString(1));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    User updateAdd() {
+        User user = null;
+        if (!(txtUsername.getText().equals("") && (txtPassword.getText().equals("") || txtPassword.getText().equals("")))) {
+            String username = txtUsername.getText();
+            String password = getUtil().md5Hash(txtPassword.getText());
+            String noHandphone = getValidation().validateNoHandphone(txtNoHandphone.getText());
+            String nama = txtNama.getText();
+            String fotoProfil = getFileHandler().getPathCopy();
+            String jekel = getFieldControl().getTextSelectedRadios(rbLaki, rbPerempuan);
+            LocalDate tanggalLahir = datePickerTanggalLahir.getValue();
+            String alamat = txtAreaAlamat.getText();
+            String statusKaryawan = cboStatusUser.getValue();
+
+            user = new User();
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setNoHp(noHandphone);
+            user.setNama(nama);
+            user.setFotoProfil(fotoProfil);
+            user.setJekel(jekel);
+            user.setTanggalLahir(tanggalLahir);
+            user.setAlamat(alamat);
+            user.setStatusUser(statusKaryawan);
+            user.setLastLogin(LocalDate.now());
+            user.setCreated(LocalDate.now());
         }
 
-        return observableList;
+        return user;
     }
 
     void setComboBoxResult(ObservableList<String> observableList) {
         Callback<ListView<String>, ListCell<String>> callback = new Callback<ListView<String>, ListCell<String>>() {
             @Override
             public ListCell<String> call(ListView<String> stringListView) {
-                ListCell<String> cell = new ListCell<>(){
+                ListCell<String> cell = new ListCell<>() {
                     @Override
                     protected void updateItem(String s, boolean empty) {
                         super.updateItem(s, empty);
@@ -480,7 +459,7 @@ public class UserController extends SerypUtil implements Initializable {
 
     void cleanComboBoxStatusUser() {
         // Fungsi dari ini adalah agar kalau pas selesai clear combo box prompt text ny tidak hilang
-        ListCell<String> listCell = new ListCell<>(){
+        ListCell<String> listCell = new ListCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);

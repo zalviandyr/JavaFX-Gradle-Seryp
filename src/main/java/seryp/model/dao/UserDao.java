@@ -1,5 +1,7 @@
 package seryp.model.dao;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import seryp.model.User;
 
 import java.sql.*;
@@ -147,18 +149,31 @@ public class UserDao {
         preparedStatement.executeUpdate();
     }
 
-    public ResultSet search(String keyword) throws SQLException {
+    public ObservableList<String> search(String keyword) throws SQLException {
         keyword = '%' + keyword + '%';
         String sql = "SELECT username FROM user WHERE username LIKE ?";
         PreparedStatement preparedStatement = CONN.prepareStatement(sql);
         preparedStatement.setString(1, keyword);
+        ResultSet resultSet = preparedStatement.executeQuery();
 
-        return preparedStatement.executeQuery();
+        ObservableList<String> observableList = FXCollections.observableArrayList();
+        while (resultSet.next()) {
+            observableList.add(resultSet.getString(1));
+        }
+
+        return observableList;
     }
 
-    public ResultSet searchAll() throws SQLException {
+    public ObservableList<String> searchAll() throws SQLException {
         String sql = "SELECT username FROM user";
-        return CONN.createStatement().executeQuery(sql);
+        ResultSet resultSet = CONN.createStatement().executeQuery(sql);
+
+        ObservableList<String> observableList = FXCollections.observableArrayList();
+        while (resultSet.next()) {
+            observableList.add(resultSet.getString(1));
+        }
+
+        return observableList;
     }
 
     public void updateLastLogin(String username, LocalDate lastLogin) throws SQLException {

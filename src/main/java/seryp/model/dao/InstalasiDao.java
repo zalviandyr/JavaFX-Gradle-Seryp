@@ -62,7 +62,7 @@ public class InstalasiDao {
     public void createTableUser() throws SQLException {
         String sql = "CREATE TABLE `user` (" +
                 "`username` varchar(25) NOT NULL," +
-                "`password` varchar(20) NOT NULL," +
+                "`password` varchar(32) NOT NULL," +
                 "`noHp` varchar(12) NOT NULL," +
                 "`nama` varchar(50) NOT NULL," +
                 "`fotoProfil` varchar(100) DEFAULT NULL," +

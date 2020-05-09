@@ -30,7 +30,6 @@ public class LoginController extends SerypUtil implements Initializable {
     public PasswordField inputPassword;
     public TextField inputPassword2;
     public Label lblAlert;
-    private User user;
     private UserDao userDao;
 
     @Override
@@ -142,13 +141,14 @@ public class LoginController extends SerypUtil implements Initializable {
             setErrorField();
         } else {
             try {
-                user = userDao.get(inputUsername.getText());
+                User user = userDao.get(inputUsername.getText());
 
                 if (user == null) {
                     setErrorField();
                 } else {
                     // cek password
-                    if (user.getPassword().equals(inputPassword.getText())) {
+                    password = getUtil().md5Hash(inputPassword.getText());
+                    if (user.getPassword().equals(password)) {
                         // update lastLogin
                         userDao.updateLastLogin(user.getUsername(), LocalDate.now());
                         // change scene

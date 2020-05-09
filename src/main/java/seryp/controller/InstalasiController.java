@@ -106,7 +106,7 @@ public class InstalasiController extends SerypUtil implements Initializable {
         String serypBasePath = txtAreaSerypBasePath.getText();
 
         String username = txtUsername.getText();
-        String password = txtPassword.getText();
+        String password = getUtil().md5Hash(txtPassword.getText());
         String nama = txtNama.getText();
         String noHandphone = getValidation().validateNoHandphone(txtNoHandphone.getText());
         String jekel = getFieldControl().getTextSelectedRadios(rbLaki, rbPerempuan);

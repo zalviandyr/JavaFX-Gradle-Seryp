@@ -70,7 +70,7 @@ public class LupaPasswordController extends SerypUtil implements Initializable {
             String username = txtUsername.getText();
 
             if (txtNewPassword.getText().equals(txtConfirmNewPassword.getText())) {
-                String newPassword = txtNewPassword.getText();
+                String newPassword = getUtil().md5Hash(txtNewPassword.getText());
 
                 try {
                     new UserDao().updatePassword(username, newPassword);

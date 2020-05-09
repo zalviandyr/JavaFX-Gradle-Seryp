@@ -3,7 +3,6 @@ package seryp;
 public class Launcher {
     // TODO setting ulang font
     // TODO encrypt file .csv
-    // TODO hash password
     // TODO buat fitur notifikasi karyawan login dan stok jika kurang dari 5
     // TODO ubah action lewat scene builder
     // TODO percantik scene transaksi dan pembayaran
