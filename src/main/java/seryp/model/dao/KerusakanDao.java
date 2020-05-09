@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KerusakanDao {
     private final Connection CONN;
@@ -34,6 +36,25 @@ public class KerusakanDao {
         }
 
         return kerusakan;
+    }
+
+    public List<Kerusakan> getAll() throws SQLException {
+        List<Kerusakan> kerusakanList = new ArrayList<>();
+        String sql = "SELECT * FROM kerusakan";
+        ResultSet resultSet = CONN.createStatement().executeQuery(sql);
+
+        while (resultSet.next()) {
+            Kerusakan kerusakan = new Kerusakan();
+            kerusakan.setIdKerusakan(resultSet.getString(1));
+            kerusakan.setNama(resultSet.getString(2));
+            kerusakan.setDeskripsi(resultSet.getString(3));
+            kerusakan.setEstimasiMax(resultSet.getInt(4));
+            kerusakan.setEstimasiMax(resultSet.getInt(5));
+
+            kerusakanList.add(kerusakan);
+        }
+
+        return kerusakanList;
     }
 
     public ResultSet getAllId() throws SQLException {

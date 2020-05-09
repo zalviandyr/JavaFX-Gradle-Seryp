@@ -3,7 +3,7 @@ package seryp.model;
 public class IdentitasToko {
     private String namaToko;
     private String alamat;
-    private String fotoProfilPath;
+    private String serypBasePath;
 
     public String getNamaToko() {
         return namaToko;
@@ -21,11 +21,11 @@ public class IdentitasToko {
         this.alamat = alamat;
     }
 
-    public String getFotoProfilPath() {
-        return fotoProfilPath;
+    public String getSerypBasePath() {
+        return serypBasePath;
     }
 
-    public void setFotoProfilPath(String fotoProfilPath) {
-        this.fotoProfilPath = fotoProfilPath;
+    public void setSerypBasePath(String serypBasePath) {
+        this.serypBasePath = serypBasePath;
     }
 }

@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PelangganDao {
     private final Connection CONN;
@@ -15,7 +17,7 @@ public class PelangganDao {
         CONN = koneksi.getConnection();
     }
 
-    public Pelanggan get(String idPelanggan) throws SQLException  {
+    public Pelanggan get(String idPelanggan) throws SQLException {
         Pelanggan pelanggan = null;
 
         String sql = "SELECT * FROM pelanggan WHERE idPelanggan = ?";
@@ -35,6 +37,25 @@ public class PelangganDao {
         }
 
         return pelanggan;
+    }
+
+    public List<Pelanggan> getAll() throws SQLException {
+        List<Pelanggan> pelangganList = new ArrayList<>();
+        String sql = "SELECT * FROM pelanggan";
+        ResultSet resultSet = CONN.createStatement().executeQuery(sql);
+
+        while (resultSet.next()) {
+            Pelanggan pelanggan = new Pelanggan();
+            pelanggan.setIdPelanggan(resultSet.getString(1));
+            pelanggan.setNama(resultSet.getString(2));
+            pelanggan.setAlamat(resultSet.getString(3));
+            pelanggan.setNoHp(resultSet.getString(4));
+            pelanggan.setJekel(resultSet.getString(5));
+
+            pelangganList.add(pelanggan);
+        }
+
+        return pelangganList;
     }
 
     public ResultSet getAllId() throws SQLException {

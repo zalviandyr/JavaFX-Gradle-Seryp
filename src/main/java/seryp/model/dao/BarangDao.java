@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import seryp.model.Barang;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BarangDao {
     private final Connection CONN;
@@ -32,6 +34,25 @@ public class BarangDao {
             barang.setStatus(resultSet.getString(6));
         }
         return barang;
+    }
+
+    public List<Barang> getAll() throws SQLException {
+        List<Barang> barangList = new ArrayList<>();
+        String sql = "SELECT * FROM barang";
+        ResultSet resultSet = CONN.createStatement().executeQuery(sql);
+
+        while (resultSet.next()) {
+            Barang barang = new Barang();
+            barang.setIdBarang(resultSet.getString(1));
+            barang.setNama(resultSet.getString(2));
+            barang.setDeskripsi(resultSet.getString(3));
+            barang.setStok(resultSet.getInt(4));
+            barang.setHarga(resultSet.getInt(5));
+            barang.setStatus(resultSet.getString(6));
+
+            barangList.add(barang);
+        }
+        return barangList;
     }
 
     public ResultSet getAllId() throws SQLException {

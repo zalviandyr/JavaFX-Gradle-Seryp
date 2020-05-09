@@ -5,3 +5,10 @@
 - SDK 14
 - Jasperreport 6.12.2
 - Mysql Connector 5.1.23
+
+## Fitur - fitur
+- Login (Admin, Karyawan aktif, Karyawan tidak aktif)
+- Read/Write data (Admin, Karyawan Aktif)
+- Backup and Restore
+- Installation Database
+- Notification

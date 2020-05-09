@@ -174,7 +174,7 @@ public class SplashController extends SerypUtil implements Initializable {
             }
 
             // get all file from path
-            File file1 = new File(identitasToko.getFotoProfilPath());
+            File file1 = new File(identitasToko.getSerypBasePath() + File.separator + "Foto profil");
             File[] listFiles = file1.listFiles();
             List<File> fileListFoto = null;
             if (listFiles != null) {

@@ -19,17 +19,17 @@ public class IdentitasTokoDao {
         PreparedStatement preparedStatement = CONN.prepareStatement(sql);
         preparedStatement.setString(1, identitasToko.getNamaToko());
         preparedStatement.setString(2, identitasToko.getAlamat());
-        preparedStatement.setString(3, identitasToko.getFotoProfilPath());
+        preparedStatement.setString(3, identitasToko.getSerypBasePath());
 
         preparedStatement.executeUpdate();
     }
 
     public void update(IdentitasToko identitasToko) throws SQLException {
-        String sql = "UPDATE identitas_toko SET nama = ?, alamat = ?, fotoProfilPath = ?";
+        String sql = "UPDATE identitas_toko SET nama = ?, alamat = ?, serypBasePath = ?";
         PreparedStatement preparedStatement = CONN.prepareStatement(sql);
         preparedStatement.setString(1, identitasToko.getNamaToko());
         preparedStatement.setString(2, identitasToko.getAlamat());
-        preparedStatement.setString(3, identitasToko.getFotoProfilPath());
+        preparedStatement.setString(3, identitasToko.getSerypBasePath());
 
         preparedStatement.executeUpdate();
     }
@@ -42,7 +42,7 @@ public class IdentitasTokoDao {
             identitasToko = new IdentitasToko();
             identitasToko.setNamaToko(resultSet.getString(1));
             identitasToko.setAlamat(resultSet.getString(2));
-            identitasToko.setFotoProfilPath(resultSet.getString(3));
+            identitasToko.setSerypBasePath(resultSet.getString(3));
         }
 
         return identitasToko;

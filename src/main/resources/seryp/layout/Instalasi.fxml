@@ -76,8 +76,8 @@
             <TextField fx:id="txtNamaToko" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="450.0" promptText="nama toko" styleClass="seryp-round" />
             <Label text="Alamat Toko" />
             <TextArea fx:id="txtAreaAlamatToko" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="450.0" promptText="alamat toko" styleClass="seryp-text-area" wrapText="true" />
-            <Label text="Foto Profil Path" />
-            <TextArea fx:id="txtAreaFotoProfilPath" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#fotoProfilPathAction" prefHeight="50.0" prefWidth="450.0" promptText="foto profil path" styleClass="seryp-text-area" />
+            <Label text="Seryp Base Path" />
+            <TextArea fx:id="txtAreaSerypBasePath" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#serypBasePathAction" prefHeight="50.0" prefWidth="450.0" promptText="seryp base path" styleClass="seryp-text-area" />
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -95,8 +95,8 @@
                                     <TextField fx:id="txtNamaToko" styleClass="seryp-round" />
                                     <Label text="Alamat" />
                                     <TextArea fx:id="txtAlamatToko" prefHeight="63.0" prefWidth="200.0" styleClass="seryp-text-area" wrapText="true" />
-                                    <Label text="Foto Profil Path" />
-                                    <TextArea fx:id="txtFotoProfilPath" prefHeight="0.0" prefWidth="200.0" styleClass="seryp-text-area" />
+                                    <Label text="Seryp Base Path" />
+                                    <TextArea fx:id="txtSerypBasePath" prefHeight="0.0" prefWidth="200.0" styleClass="seryp-text-area" />
                                     <Button fx:id="btnOkSetting" mnemonicParsing="false" prefWidth="100.0" styleClass="seryp-btn-primary" text="OK" />
                                  </children>
                               </VBox>

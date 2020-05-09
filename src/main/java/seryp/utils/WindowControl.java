@@ -25,12 +25,14 @@ import javafx.stage.Stage;
 import seryp.model.IdentitasToko;
 import seryp.model.User;
 import seryp.model.dao.IdentitasTokoDao;
+import seryp.model.dao.UserDao;
 import seryp.utils.boxes.AlertBox;
 import seryp.utils.boxes.ConfirmBox;
 
 import java.io.*;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class WindowControl {
     double xOffset = 0;
@@ -233,48 +235,13 @@ public class WindowControl {
                     }
                 }
             }
-
-            if (node instanceof Button) {
-                if (node.getId().equals("btnBackup")) {
-                    Button btnBackup = (Button) node;
-                    btnBackup.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            try {
-                                FileChooser fileChooser = new FileChooser();
-                                // set filter extension
-                                FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("SQL Files", "*.sql");
-                                fileChooser.getExtensionFilters().add(extensionFilter);
-                                fileChooser.setInitialFileName("Seryp backup - " + LocalDate.now() + ".sql");
-                                File file = fileChooser.showSaveDialog(new Stage());
-
-                                ProcessBuilder builder = new ProcessBuilder(
-                                        "cmd.exe", "/c", "cd /d C:\\xampp\\mysql\\bin && mysqldump -u root seryp > ", file.getAbsolutePath());
-                                builder.redirectErrorStream(true);
-                                Process p = builder.start();
-                                BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                                String line;
-                                while (true) {
-                                    line = r.readLine();
-                                    if (line == null) {
-                                        break;
-                                    }
-                                    System.out.println(line);
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                }
-            }
         }
     }
 
     public void setSettingBar(VBox settingBar, IdentitasToko identitasToko) {
         TextField txtNamaTokoNode = null;
-        TextArea txtFotoProfilPathNode = null;
         TextArea txtAlamatTokoNode = null;
+        TextArea txtSerypBasePathNode = null;
         Button btnOkSetting = null;
 
         for (Node node : settingBar.getChildren()) {
@@ -287,8 +254,8 @@ public class WindowControl {
                 if (node.getId().equals("txtAlamatToko")) {
                     txtAlamatTokoNode = (TextArea) node;
                 }
-                if (node.getId().equals("txtFotoProfilPath"))
-                    txtFotoProfilPathNode = (TextArea) node;
+                if (node.getId().equals("txtSerypBasePath"))
+                    txtSerypBasePathNode = (TextArea) node;
             }
 
             if (node instanceof Button)
@@ -297,24 +264,24 @@ public class WindowControl {
         }
 
         TextField txtNamaToko = txtNamaTokoNode;
-        TextArea txtFotoProfilPath = txtFotoProfilPathNode;
+        TextArea txtSerypBasePath = txtSerypBasePathNode;
         TextArea txtAlamatToko = txtAlamatTokoNode;
 
         txtNamaToko.setText(identitasToko.getNamaToko());
-        txtFotoProfilPath.setText(identitasToko.getFotoProfilPath());
-        txtFotoProfilPath.setEditable(false);
+        txtSerypBasePath.setText(identitasToko.getSerypBasePath());
+        txtSerypBasePath.setEditable(false);
         txtAlamatToko.setText(identitasToko.getAlamat());
 
         btnOkSetting.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (!txtNamaToko.getText().equals("") && !txtAlamatToko.getText().equals("") && !txtFotoProfilPath.getText().equals("")) {
+                if (!txtNamaToko.getText().equals("") && !txtAlamatToko.getText().equals("") && !txtSerypBasePath.getText().equals("")) {
                     IdentitasTokoDao identitasTokoDao = new IdentitasTokoDao();
                     IdentitasToko identitasToko = new IdentitasToko();
 
                     identitasToko.setNamaToko(txtNamaToko.getText());
                     identitasToko.setAlamat(txtAlamatToko.getText());
-                    identitasToko.setFotoProfilPath(txtFotoProfilPath.getText());
+                    identitasToko.setSerypBasePath(txtSerypBasePath.getText());
 
                     try {
                         identitasTokoDao.update(identitasToko);

@@ -19,16 +19,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.sf.jasperreports.engine.util.JRLoader;
-import seryp.model.IdentitasToko;
-import seryp.model.LaporanBulanan;
-import seryp.model.LaporanHarian;
-import seryp.model.User;
-import seryp.model.dao.IdentitasTokoDao;
-import seryp.model.dao.LaporanDao;
+import seryp.model.*;
+import seryp.model.dao.*;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import seryp.utils.SerypUtil;
@@ -40,6 +37,7 @@ import seryp.utils.boxes.LaporanHarianBox;
 import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +53,7 @@ public class AdminController extends SerypUtil implements Initializable {
     public Button btnUser;
     public Button btnLaporanHarian;
     public Button btnLaporanBulanan;
+    public Button btnBackup;
     public ToggleButton toggleBtnSetting;
     public TitledPane paneSetting;
     private IdentitasTokoDao identitasTokoDao;
@@ -70,6 +69,7 @@ public class AdminController extends SerypUtil implements Initializable {
         btnUserAction();
         btnLaporanBulananAction();
         btnLaporanHarianAction();
+        btnBackupAction();
         toggleBtnSettingAction();
     }
 
@@ -240,6 +240,40 @@ public class AdminController extends SerypUtil implements Initializable {
                     }
                 } catch (JRException | FileNotFoundException | SQLException e) {
                     e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void btnBackupAction() {
+        btnBackup.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    IdentitasToko identitasToko = new IdentitasTokoDao().get();
+                    String pathBackup = identitasToko.getSerypBasePath() + File.separator + "Backup";
+                    File file = new File(pathBackup);
+                    file.mkdir();
+
+                    List<User> userList = new UserDao().getAll();
+                    List<Barang> barangList = new BarangDao().getAll();
+                    List<Kerusakan> kerusakanList = new KerusakanDao().getAll();
+                    List<Pelanggan> pelangganList = new PelangganDao().getAll();
+                    List<Servis> servisList = new ServisDao().getAll();
+                    List<DetailKerusakan> detailKerusakanList = new DetailKerusakanDao().getAll();
+
+                    getFileHandler().backupIdentitasTokoCsv(identitasToko, new File(file + File.separator + "Seryp backup - IDENTITAS_TOKO - " + LocalDate.now() + ".csv"));
+                    getFileHandler().backupUserCsv(userList, new File(file + File.separator + "Seryp backup - USER - " + LocalDate.now() + ".csv"));
+                    getFileHandler().backupBarangCsv(barangList, new File(file + File.separator + "Seryp backup - BARANG - " + LocalDate.now() + ".csv"));
+                    getFileHandler().backupKerusakanCsv(kerusakanList, new File(file + File.separator + "Seryp backup - KERUSAKAN - " + LocalDate.now() + ".csv"));
+                    getFileHandler().backupPelangganCsv(pelangganList, new File(file + File.separator + "Seryp backup - PELANGGAN - " + LocalDate.now() + ".csv"));
+                    getFileHandler().backupServisCsv(servisList, new File(file + File.separator + "Seryp backup - SERVIS - " + LocalDate.now() + ".csv"));
+                    getFileHandler().backupDetailKerusakanCsv(detailKerusakanList, new File(file + File.separator + "Seryp backup - DETAIL_KERUSAKAN - " + LocalDate.now() + ".csv"));
+
+                    AlertBox.display("Berhasil Backup", "Hasil backup tersimpan di \"" + pathBackup + "\"");
+                } catch (SQLException e) {
+//                    e.printStackTrace();
+                    AlertBox.display("Gagal Backup", "Tidak ada yang dibackup!");
                 }
             }
         });

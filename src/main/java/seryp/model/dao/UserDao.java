@@ -40,31 +40,28 @@ public class UserDao {
         return user;
     }
 
-    public List<User> getAll() throws SQLException{
-        List<User> list = null;
-
+    public List<User> getAll() throws SQLException {
+        List<User> list = new ArrayList<>();
         String sql = "SELECT * FROM user";
         ResultSet resultSet = CONN.createStatement().executeQuery(sql);
 
-        if (resultSet.isBeforeFirst()) {
-            list = new ArrayList<>();
-            while (resultSet.next()) {
-                User user = new User();
-                user.setUsername(resultSet.getString(1));
-                user.setPassword(resultSet.getString(2));
-                user.setNoHp(resultSet.getString(3));
-                user.setNama(resultSet.getString(4));
-                user.setFotoProfil(resultSet.getString(5));
-                user.setJekel(resultSet.getString(6));
-                user.setTanggalLahir(resultSet.getDate(7).toLocalDate());
-                user.setAlamat(resultSet.getString(8));
-                user.setStatusUser(resultSet.getString(9));
-                user.setLastLogin(null);
-                user.setStatusUser(null);
+        while (resultSet.next()) {
+            User user = new User();
+            user.setUsername(resultSet.getString(1));
+            user.setPassword(resultSet.getString(2));
+            user.setNoHp(resultSet.getString(3));
+            user.setNama(resultSet.getString(4));
+            user.setFotoProfil(resultSet.getString(5));
+            user.setJekel(resultSet.getString(6));
+            user.setTanggalLahir(resultSet.getDate(7).toLocalDate());
+            user.setAlamat(resultSet.getString(8));
+            user.setStatusUser(resultSet.getString(9));
+            user.setLastLogin(resultSet.getDate(10).toLocalDate());
+            user.setCreated(resultSet.getDate(11).toLocalDate());
 
-                list.add(user);
-            }
+            list.add(user);
         }
+
         return list;
     }
 

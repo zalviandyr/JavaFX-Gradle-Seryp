@@ -27,7 +27,7 @@ public class InstalasiController extends SerypUtil implements Initializable {
     public Button btnClose;
     public TextField txtNamaToko;
     public TextArea txtAreaAlamatToko;
-    public TextArea txtAreaFotoProfilPath;
+    public TextArea txtAreaSerypBasePath;
     public TextField txtUsername;
     public TextField txtPassword2;
     public TextField txtNama;
@@ -56,8 +56,8 @@ public class InstalasiController extends SerypUtil implements Initializable {
         // init date picker
         datePickerTanggalLahir.setValue(LocalDate.now());
 
-        // set txtAreaFotoProfilPath non editable
-        txtAreaFotoProfilPath.setEditable(false);
+        // set txtAreaSerypBasePath non editable
+        txtAreaSerypBasePath.setEditable(false);
 
         // set invisible txt password2
         txtPassword2.setVisible(false);
@@ -79,14 +79,14 @@ public class InstalasiController extends SerypUtil implements Initializable {
     }
 
     @FXML
-    void fotoProfilPathAction() {
+    void serypBasePathAction() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File file = directoryChooser.showDialog(new Stage());
 
         // path img yang akan dibuat dan disimpan ke database
         if (file != null) {
-            String pathImg = file.getAbsolutePath() + File.separator + "Seryp IMG";
-            txtAreaFotoProfilPath.setText(pathImg);
+            String basePath = file.getAbsolutePath() + File.separator + "Seryp Files";
+            txtAreaSerypBasePath.setText(basePath);
         }
     }
 
@@ -118,7 +118,7 @@ public class InstalasiController extends SerypUtil implements Initializable {
     void btnKonfirmasiAction() {
         String namaToko = txtNamaToko.getText();
         String alamatToko = txtAreaAlamatToko.getText();
-        String fotoProfilPath = txtAreaFotoProfilPath.getText();
+        String serypBasePath = txtAreaSerypBasePath.getText();
 
         String username = txtUsername.getText();
         String password = txtPassword.getText();
@@ -133,7 +133,7 @@ public class InstalasiController extends SerypUtil implements Initializable {
             IdentitasToko identitasToko = new IdentitasToko();
             identitasToko.setNamaToko(namaToko);
             identitasToko.setAlamat(alamatToko);
-            identitasToko.setFotoProfilPath(fotoProfilPath);
+            identitasToko.setSerypBasePath(serypBasePath);
 
             User user = new User();
             user.setUsername(username);
@@ -152,9 +152,17 @@ public class InstalasiController extends SerypUtil implements Initializable {
                 // create database seryp
                 createDatabaseSeryp();
 
-                // create directory foto profil
-                File file = new File(fotoProfilPath);
+                // create dir serypBasePath
+                File file = new File(serypBasePath);
                 file.mkdir();
+
+                // create dir Foto profil
+                File file1 = new File(serypBasePath + File.separator + "Foto profil");
+                file1.mkdir();
+
+                // create dir backup
+                File file2 = new File(serypBasePath + File.separator + "Backup");
+                file2.mkdir();
 
                 IdentitasTokoDao identitasTokoDao = new IdentitasTokoDao();
                 UserDao userDao = new UserDao();

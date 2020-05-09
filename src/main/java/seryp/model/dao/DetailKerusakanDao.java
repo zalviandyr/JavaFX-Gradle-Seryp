@@ -41,7 +41,7 @@ public class DetailKerusakanDao {
         ResultSet resultSet = preparedStatement.executeQuery();
 
         // cek jika no faktur ada
-        if(resultSet.isBeforeFirst()) {
+        if (resultSet.isBeforeFirst()) {
             list = new ArrayList<>();
             DetailKerusakan detailKerusakan;
             while (resultSet.next()) {
@@ -57,5 +57,25 @@ public class DetailKerusakanDao {
             }
         }
         return list;
+    }
+
+    public List<DetailKerusakan> getAll() throws SQLException {
+        List<DetailKerusakan> detailKerusakanList = new ArrayList<>();
+        String sql = "SELECT * FROM detail_kerusakan";
+        ResultSet resultSet = CON.createStatement().executeQuery(sql);
+
+        while (resultSet.next()) {
+            DetailKerusakan detailKerusakan = new DetailKerusakan();
+            detailKerusakan.setNoFaktur(resultSet.getString(1));
+            detailKerusakan.setIdKerusakan(resultSet.getString(2));
+            detailKerusakan.setIdBarang(resultSet.getString(3));
+            detailKerusakan.setUnit(resultSet.getInt(4));
+            detailKerusakan.setTotalEstimasiMin(resultSet.getInt(5));
+            detailKerusakan.setTotalEstimasiMax(resultSet.getInt(6));
+
+            detailKerusakanList.add(detailKerusakan);
+        }
+
+        return detailKerusakanList;
     }
 }

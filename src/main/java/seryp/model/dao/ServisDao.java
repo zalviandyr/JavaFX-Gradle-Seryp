@@ -3,6 +3,8 @@ package seryp.model.dao;
 import seryp.model.Servis;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServisDao {
     private final Connection CONN;
@@ -34,6 +36,30 @@ public class ServisDao {
         }
 
         return servis;
+    }
+
+    public List<Servis> getAll() throws SQLException {
+        List<Servis> servisList = new ArrayList<>();
+        String sql = "SELECT * FROM servis";
+        ResultSet resultSet = CONN.createStatement().executeQuery(sql);
+
+        while (resultSet.next()) {
+            Servis servis = new Servis();
+            servis.setNoFaktur(resultSet.getString(1));
+            servis.setUsername(resultSet.getString(2));
+            servis.setIdPelanggan(resultSet.getString(3));
+            servis.setMerkLabel(resultSet.getString(4));
+            servis.setTanggalHariIni(resultSet.getDate(5).toLocalDate());
+            servis.setBatasHari(resultSet.getDate(6).toLocalDate());
+            servis.setStatusDP(resultSet.getBoolean(7));
+            servis.setUangDP(resultSet.getInt(8));
+            servis.setStatusPembayaran(resultSet.getBoolean(9));
+            servis.setUangPembayaran(resultSet.getInt(10));
+
+            servisList.add(servis);
+        }
+
+        return servisList;
     }
 
     public ResultSet getAllId() throws SQLException {
