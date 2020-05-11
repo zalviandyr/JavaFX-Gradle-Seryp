@@ -44,7 +44,7 @@ public class ServiceController extends SerypUtil implements Initializable {
     private ServisDao servisDao;
     private Servis servis;
     private List<DetailKerusakan> listDetailKerusakan;
-    public static User userLogin; // data yang dikirim KaryawanController
+    public static User userLogin = SerypUtil.getUserSession(); // data session
     public static String namaPelanggan;
     public static String idPelanggan;
 

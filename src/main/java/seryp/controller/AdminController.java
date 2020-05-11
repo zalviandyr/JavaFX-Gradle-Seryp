@@ -42,7 +42,7 @@ public class AdminController extends SerypUtil implements Initializable {
     public TitledPane paneSetting;
     private IdentitasTokoDao identitasTokoDao;
     private LaporanDao laporanDao;
-    public static User userLogin; // data yang dikirim dari LoginController
+    public static User userLogin = SerypUtil.getUserSession(); // data session
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -61,11 +61,6 @@ public class AdminController extends SerypUtil implements Initializable {
 
         // set paneSetting
         getWindowControl().setPaneSetting(toggleBtnSetting, paneSetting, settingBar);
-
-        // init user and send to another scene
-        BarangController.userLogin = AdminController.userLogin;
-        KerusakanController.userLogin = AdminController.userLogin;
-        UserController.userLogin = AdminController.userLogin;
     }
 
     @FXML

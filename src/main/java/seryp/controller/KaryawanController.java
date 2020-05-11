@@ -18,7 +18,7 @@ public class KaryawanController extends SerypUtil implements Initializable {
     public Button btnTransaksi;
     public Button btnPembayaran;
     public Button btnLogOut;
-    public static User userLogin; // data yang dikirim LoginController
+    public static User userLogin = SerypUtil.getUserSession(); // data session
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

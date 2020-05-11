@@ -38,7 +38,7 @@ public class PembayaranController extends SerypUtil implements Initializable {
     private ServisDao servisDao;
     private PelangganDao pelangganDao;
     private DetailKerusakanDao detailKerusakanDao;
-    public static User userLogin; // data from karyawan seryp.controller
+    public static User userLogin = SerypUtil.getUserSession(); // data session
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

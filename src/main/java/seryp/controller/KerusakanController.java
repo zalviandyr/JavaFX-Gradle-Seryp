@@ -40,7 +40,7 @@ public class KerusakanController extends SerypUtil implements Initializable {
     public ComboBox<Kerusakan> cboResult;
     private KerusakanDao kerusakanDao;
     private Kerusakan kerusakan;
-    public static User userLogin; // data yang dikirim dari AdminController
+    public static User userLogin = SerypUtil.getUserSession(); // data session
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -88,7 +88,7 @@ public class KerusakanController extends SerypUtil implements Initializable {
 
     @FXML
     void cboResultAction() {
-        /**
+        /*
          * Avoid error null pointer
          * Karena pada saat setelah melakukan pencarian lagi maka cboResult akan tereksekusi otomatis (masih belum tau kenapa),
          * yang mengakibatkan adanya nilai kembalian yang null

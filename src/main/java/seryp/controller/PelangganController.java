@@ -39,7 +39,7 @@ public class PelangganController extends SerypUtil implements Initializable {
     public ComboBox<Pelanggan> cboResult;
     private Pelanggan pelanggan;
     private PelangganDao pelangganDao;
-    public static User userLogin; // data yang dikirim KaryawanController
+    public static User userLogin = SerypUtil.getUserSession(); // data session
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

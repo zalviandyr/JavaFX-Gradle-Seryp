@@ -43,7 +43,7 @@ public class ListController extends SerypUtil implements Initializable {
     private IdentitasTokoDao identitasTokoDao;
     private DetailKerusakanDao detailKerusakanDao;
     private LaporanDao laporanDao;
-    public static User userLogin; // data yang dikirim KaryawanController
+    public static User userLogin = SerypUtil.getUserSession(); // data session
     public static List<DetailKerusakan> listDetailKerusakan; // data yang dikirim dari service seryp.controller
     public static Servis servis; // data yang dikirim dari service seryp.controller
 
@@ -165,8 +165,8 @@ public class ListController extends SerypUtil implements Initializable {
                 if (filetoSave != null)
                     JasperExportManager.exportReportToPdfStream(jasperPrint, new FileOutputStream(filetoSave));
             }
-        } catch (SQLException | FileNotFoundException | JRException e) {
-            e.printStackTrace();
+        } catch (SQLException | FileNotFoundException | NullPointerException | JRException e) {
+//            e.printStackTrace();
         }
     }
 

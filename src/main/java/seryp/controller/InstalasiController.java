@@ -147,7 +147,8 @@ public class InstalasiController extends SerypUtil implements Initializable {
                             identitasTokoDao.add(identitasToko);
                             userDao.add(user);
 
-                            AdminController.userLogin = user;
+                            // set session
+                            SerypUtil.setUserSession(user);
                             getWindowControl().moveToScene(btnKonfirmasi, "admin");
                         }
                     }

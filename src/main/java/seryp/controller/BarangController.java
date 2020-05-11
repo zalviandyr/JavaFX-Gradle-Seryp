@@ -1,7 +1,5 @@
 package seryp.controller;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -42,7 +40,7 @@ public class BarangController extends SerypUtil implements Initializable {
     public ComboBox<Barang> cboResult;
     public ComboBox<String> cboStatusBarang;
     private BarangDao barangDao;
-    public static User userLogin; // data yang dikirim dari AdminController
+    public static User userLogin = SerypUtil.getUserSession(); // data session
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

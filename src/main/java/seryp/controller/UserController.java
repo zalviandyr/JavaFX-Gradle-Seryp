@@ -49,7 +49,7 @@ public class UserController extends SerypUtil implements Initializable {
     public ComboBox<String> cboStatusUser;
     public ComboBox<User> cboResult;
     private UserDao userDao;
-    public static User userLogin; // data yang dikirim dari AdminController
+    public static User userLogin = SerypUtil.getUserSession(); // data session
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

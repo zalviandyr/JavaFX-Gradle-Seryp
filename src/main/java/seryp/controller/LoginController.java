@@ -110,10 +110,12 @@ public class LoginController extends SerypUtil implements Initializable {
                         userDao.updateLastLogin(user.getUsername(), LocalDate.now());
                         // change scene
                         if (user.getStatusUser().equals("Admin")) {
-                            AdminController.userLogin = user;
+                            // set session
+                            SerypUtil.setUserSession(user);
                             getWindowControl().moveToScene(btnLogin, "admin");
                         } else if (user.getStatusUser().equals("Karyawan Aktif")) {
-                            KaryawanController.userLogin = user;
+                            // set session
+                            SerypUtil.setUserSession(user);
                             getWindowControl().moveToScene(btnLogin, "karyawan");
                         } else {
                             AlertBox.display("Login Gagal", "Maaf anda terdaftar sebagai \"Karyawan Tidak Aktif\".\n Mohon hubungi Admin untuk menyelesaikan masalah.");
