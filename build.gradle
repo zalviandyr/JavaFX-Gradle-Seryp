@@ -11,22 +11,31 @@ javafx {
 
 mainClassName = "seryp.SerypFX"
 
-jar {
-    manifest {
-        attributes 'Main-Class': 'seryp.Launcher'
-    }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-}
+//jar {
+//    manifest {
+//        attributes 'Main-Class': 'seryp.Launcher'
+//    }
+//    from {
+//        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+//    }
+//}
+
 
 jlink {
     launcher {
         name = 'Gradle Seryp'
     }
-
     jpackage {
-        imageOptions = ['--icon','src/main/resources/seryp/assets/iconcomputer-logo-png-8.ico']
+        jpackageHome = 'C:\\Program Files\\Java\\jdk-14'
+        outputDir = 'my-packaging'
+        // imageOutputDir = file("$buildDir/my-packaging-image")
+        // installerOutputDir = file("$buildDir/my-packaging-installer")
+        imageName = 'SerypApp'
+        imageOptions = ['--icon', 'src/main/resources/seryp/assets/icon/computer-logo-png-8.ico']
+        skipInstaller = false
+        installerName = 'SerypApp'
+        installerType = 'exe'
+        installerOptions = ['--win-dir-chooser', '--win-menu', '--win-shortcut']
     }
 }
 
