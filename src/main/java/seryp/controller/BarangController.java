@@ -1,5 +1,7 @@
 package seryp.controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,9 +40,8 @@ public class BarangController extends SerypUtil implements Initializable {
     public TextField txtStock;
     public TextArea txtAreaDeskripsi;
     public ComboBox<Barang> cboResult;
-    public ComboBox<String> cboStatus;
+    public ComboBox<String> cboStatusBarang;
     private BarangDao barangDao;
-    private Barang barang;
     public static User userLogin; // data yang dikirim dari AdminController
 
     @Override
@@ -58,7 +59,7 @@ public class BarangController extends SerypUtil implements Initializable {
         getWindowControl().setPaneSetting(toggleBtnSetting, paneSetting, settingBar);
 
         // init combo box
-        getFieldControl().setComboBoxStatus(cboStatus, "Status", "Ready", "Non Ready");
+        getFieldControl().setComboBoxStatus(cboStatusBarang, "Status", "Ready", "Non Ready");
 
         // Setting Text Field
         txtId.setEditable(false);
@@ -74,7 +75,7 @@ public class BarangController extends SerypUtil implements Initializable {
 
     @FXML
     void btnCariAction() {
-        ObservableList<Barang> observableList = null;
+        ObservableList<Barang> observableList;
 
         try {
             if (txtCariBarang.getText().equals("")) {
@@ -92,7 +93,7 @@ public class BarangController extends SerypUtil implements Initializable {
 
     @FXML
     void cboResultAction() {
-        /**
+        /*
          * Avoid error null pointer
          * Karena pada saat setelah melakukan pencarian lagi maka cboResult akan tereksekusi otomatis (masih belum tau kenapa),
          * yang mengakibatkan adanya nilai kembalian yang null
@@ -109,7 +110,7 @@ public class BarangController extends SerypUtil implements Initializable {
             txtHarga.setText(String.valueOf(barang.getHarga()));
             txtStock.setText(String.valueOf(barang.getStok()));
 
-            cboStatus.setValue(barang.getStatus());
+            cboStatusBarang.setValue(barang.getStatus());
         } catch (SQLException | NullPointerException e) {
             System.out.println("Ada yang null nih!");
 //                    e.printStackTrace();
@@ -118,56 +119,60 @@ public class BarangController extends SerypUtil implements Initializable {
 
     @FXML
     void toggleBtnCariBarangAction() {
-                // cleaning
-                txtCariBarang.setText("");
-                txtId.setText("");
-                getFieldControl().cleanComboBoxResult(cboResult);
+        // cleaning
+        txtCariBarang.setText("");
+        txtId.setText("");
+        getFieldControl().cleanComboBoxResult(cboResult);
 
-                if (toggleBtnCariBarang.isSelected()) {
-                    // change style button
-                    toggleBtnCariBarang.getStyleClass().remove("seryp-btn-primary");
-                    toggleBtnCariBarang.getStyleClass().add("seryp-btn-secondary");
-                    btnUpdate.setVisible(true);
-                    btnAdd.setVisible(false);
-                    btnDelete.setVisible(true);
-                    paneCariBarang.setExpanded(true);
-                } else {
-                    // change style button
-                    toggleBtnCariBarang.getStyleClass().remove("seryp-btn-secondary");
-                    toggleBtnCariBarang.getStyleClass().add("seryp-btn-primary");
-                    btnUpdate.setVisible(false);
-                    btnAdd.setVisible(true);
-                    btnDelete.setVisible(false);
-                    paneCariBarang.setExpanded(false);
-                }
+        if (toggleBtnCariBarang.isSelected()) {
+            // change style button
+            toggleBtnCariBarang.getStyleClass().remove("seryp-btn-primary");
+            toggleBtnCariBarang.getStyleClass().add("seryp-btn-secondary");
+            btnUpdate.setVisible(true);
+            btnAdd.setVisible(false);
+            btnDelete.setVisible(true);
+            paneCariBarang.setExpanded(true);
+        } else {
+            // change style button
+            toggleBtnCariBarang.getStyleClass().remove("seryp-btn-secondary");
+            toggleBtnCariBarang.getStyleClass().add("seryp-btn-primary");
+            btnUpdate.setVisible(false);
+            btnAdd.setVisible(true);
+            btnDelete.setVisible(false);
+            paneCariBarang.setExpanded(false);
+        }
+    }
+
+    @FXML
+    void cboStatusBarangAction() {
+        try {
+            if (cboStatusBarang.getValue().equals("Ready")) {
+                txtStock.setText("");
+                txtStock.setDisable(false);
+                txtStock.setEditable(true);
+            } else if (cboStatusBarang.getValue().equals("Non Ready")) {
+                txtStock.setText("0");
+                txtStock.setDisable(true);
+                txtStock.setEditable(false);
+            }
+        } catch (NullPointerException e) {
+            System.out.println("Ada yang null nih! (2)");
+        }
     }
 
     @FXML
     void btnUpdateAction() {
-        String id = txtId.getText();
-        String namaBarang = txtNamaBarang.getText();
-        String deskripsi = txtAreaDeskripsi.getText();
-        int harga = getValidation().validateInteger(txtHarga.getText());
-        int stok = getValidation().validateInteger(txtStock.getText());
-        String status = cboStatus.getValue();
-
         try {
-            barang = new Barang();
-
-            barang.setIdBarang(id);
-            barang.setNama(namaBarang);
-            barang.setDeskripsi(deskripsi);
-            barang.setHarga(harga);
-            barang.setStok(stok);
-            barang.setStatus(status);
-
+            Barang barang = updateAdd("Update");
+            System.out.println(barang);
             barangDao.update(barang);
+
             cleanField();
             getFieldControl().cleanComboBoxResult(cboResult);
-            getFieldControl().cleanComboBoxStatus(cboStatus);
+            getFieldControl().cleanComboBoxStatus(cboStatusBarang);
 
             // combo box harus di set ulang agar item-item selain yang di set tidak hilang
-            getFieldControl().setComboBoxStatus(cboStatus, "Status", "Ready", "Non Ready");
+            getFieldControl().setComboBoxStatus(cboStatusBarang, "Status", "Ready", "Non Ready");
 
             AlertBox.display("Berhasil Update", "Berhasil update data barang");
         } catch (SQLException | NullPointerException e) {
@@ -179,27 +184,14 @@ public class BarangController extends SerypUtil implements Initializable {
     @FXML
     void btnAddAction() {
         try {
-            String id = getUtil().getCustomId(barangDao.getAllId(), "B");
-            String namaBarang = txtNamaBarang.getText();
-            String deskripsi = txtAreaDeskripsi.getText();
-            int harga = getValidation().validateInteger(txtHarga.getText());
-            int stok = getValidation().validateInteger(txtStock.getText());
-            String status = cboStatus.getValue();
-
-            barang = new Barang();
-            barang.setIdBarang(id);
-            barang.setNama(namaBarang);
-            barang.setDeskripsi(deskripsi);
-            barang.setHarga(harga);
-            barang.setStok(stok);
-            barang.setStatus(status);
+            Barang barang = updateAdd("Add");
 
             barangDao.add(barang);
             cleanField();
-            getFieldControl().cleanComboBoxStatus(cboStatus);
+            getFieldControl().cleanComboBoxStatus(cboStatusBarang);
 
             // combo box harus di set ulang agar item-item selain yang di set tidak hilang
-            getFieldControl().setComboBoxStatus(cboStatus, "Status", "Ready", "Non Ready");
+            getFieldControl().setComboBoxStatus(cboStatusBarang, "Status", "Ready", "Non Ready");
 
             AlertBox.display("Berhasil Tambah", "Berhasil tambah data barang");
         } catch (SQLException | NullPointerException e) {
@@ -220,7 +212,7 @@ public class BarangController extends SerypUtil implements Initializable {
 
                     cleanField();
                     getFieldControl().cleanComboBoxResult(cboResult);
-                    getFieldControl().cleanComboBoxStatus(cboStatus);
+                    getFieldControl().cleanComboBoxStatus(cboStatusBarang);
                     AlertBox.display("Berhasil Delete", "Berhasil menghapus data");
                 }
             }
@@ -268,5 +260,40 @@ public class BarangController extends SerypUtil implements Initializable {
         cboResult.setItems(observableList);
         cboResult.setCellFactory(cellCallback);
         cboResult.setButtonCell(cellCallback.call(null));
+    }
+
+    Barang updateAdd(String aksi) {
+        Barang barang = null;
+        try {
+            String id = "";
+            String namaBarang, deskripsi, status;
+            int harga, stok;
+
+            // aksi
+            if (aksi.equals("Add")) {
+                id = getUtil().getCustomId(barangDao.getAllId(), "B");
+            }
+
+            if (aksi.equals("Update")) {
+                id = txtId.getText();
+            }
+
+            namaBarang = txtNamaBarang.getText();
+            deskripsi = txtAreaDeskripsi.getText();
+            harga = getValidation().validateInteger(txtHarga.getText());
+            stok = getValidation().validateInteger(txtStock.getText());
+            status = cboStatusBarang.getValue();
+
+            barang = new Barang();
+            barang.setIdBarang(id);
+            barang.setNama(namaBarang);
+            barang.setDeskripsi(deskripsi);
+            barang.setHarga(harga);
+            barang.setStok(stok);
+            barang.setStatus(status);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return barang;
     }
 }

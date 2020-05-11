@@ -17,19 +17,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Ellipse;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import seryp.model.IdentitasToko;
 import seryp.model.User;
 import seryp.model.dao.IdentitasTokoDao;
-import seryp.model.dao.UserDao;
 import seryp.utils.boxes.AlertBox;
 import seryp.utils.boxes.ConfirmBox;
 
 import java.io.*;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.List;
 
 public class WindowControl {
     double xOffset = 0;
@@ -102,7 +98,7 @@ public class WindowControl {
     }
 
     private void setDragWindow(Node node, Pane pane) {
-        /**
+        /*
          * Memakai node, karena node adalah super class dari semua component control di javafx
          * Pane merupakan super class dari berbagai container dari JavaFX
          * */

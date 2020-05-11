@@ -112,7 +112,7 @@
                                     <RowConstraints minHeight="1.0" prefHeight="1.0" valignment="TOP" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <Button fx:id="btnCari" mnemonicParsing="false" prefHeight="28.0" prefWidth="191.0" text="Cari" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <Button fx:id="btnCari" mnemonicParsing="false" onAction="#btnCariAction" prefHeight="28.0" prefWidth="191.0" text="Cari" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <styleClass>
                                           <String fx:value="seryp-round" />
                                           <String fx:value="seryp-btn-primary" />
@@ -174,8 +174,8 @@
                                     <Label fx:id="lblEstimasi" text="Estimasi" />
                                  </children>
                               </HBox>
-                              <CheckBox fx:id="cbPembayaranDP" mnemonicParsing="false" text="Apakah pembayaran DP ?" GridPane.rowIndex="1" />
-                              <CheckBox fx:id="cbPembayaranTunai" mnemonicParsing="false" text="Apakah pembayaran Tunai ?" GridPane.rowIndex="2" />
+                              <CheckBox fx:id="cbPembayaranDP" mnemonicParsing="false" onAction="#cbPembayaranDPAction" text="Apakah pembayaran DP ?" GridPane.rowIndex="1" />
+                              <CheckBox fx:id="cbPembayaranTunai" mnemonicParsing="false" onAction="#cbPembayaranTunaiAction" text="Apakah pembayaran Tunai ?" GridPane.rowIndex="2" />
                               <TextField fx:id="txtPembayaranDP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" styleClass="seryp-round" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <padding>
                                     <Insets left="25.0" />
@@ -196,8 +196,8 @@
                                     <Insets left="3.0" />
                                  </padding>
                               </Label>
-                              <Button fx:id="btnKonfirmasiPembayaran" mnemonicParsing="false" prefHeight="25.0" prefWidth="404.0" styleClass="seryp-btn-primary" text="Konfirmasi Pembayaran" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <Button fx:id="btnBack" mnemonicParsing="false" prefHeight="25.0" prefWidth="343.0" styleClass="seryp-btn-primary" text="Back" GridPane.rowIndex="3" />
+                              <Button fx:id="btnKonfirmasiPembayaran" mnemonicParsing="false" onAction="#btnKonfirmasiPembayaranAction" prefHeight="25.0" prefWidth="404.0" styleClass="seryp-btn-primary" text="Konfirmasi Pembayaran" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Button fx:id="btnBack" mnemonicParsing="false" onAction="#btnBackAction" prefHeight="25.0" prefWidth="343.0" styleClass="seryp-btn-primary" text="Back" GridPane.rowIndex="3" />
                            </children>
                         </GridPane>
                      </children>

@@ -11,4 +11,3 @@
 - Read/Write data (Admin, Karyawan Aktif)
 - Backup and Restore
 - Installation Database
-- Notification

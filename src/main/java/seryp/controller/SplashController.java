@@ -155,20 +155,24 @@ public class SplashController extends SerypUtil implements Initializable {
                 public void run() {
                     boolean value = ConfirmBox.display("Failed to find Database", "Apakah anda ingin me-restore data-data yang ada ? ");
                     if (value) { // Instalasi dengan database kosong (Restore)
-                        AlertBox.display("Failed to find Database", "Silahkan pilih DIRECTORY atau FOLDER \"Backup\" di dalam Folder \"Seryp Files\"");
+                        AlertBox.display("Failed to find Database", "Silahkan pilih DIRECTORY atau FOLDER \"Backup\\<Tanggal>\" di dalam Folder \"Seryp Files\"");
                         DirectoryChooser directoryChooser = new DirectoryChooser();
                         File file = directoryChooser.showDialog(new Stage()); // untuk mengambil path "Seryp Files"
 
-                        // declare variabel
-                        IdentitasToko identitasToko = null;
-                        List<User> userList = null;
-                        List<Barang> barangList = null;
-                        List<Kerusakan> kerusakanList = null;
-                        List<Pelanggan> pelangganList = null;
-                        List<Servis> servisList = null;
-                        List<DetailKerusakan> detailKerusakanList = null;
+                        // jika user tidak memilih folder backup maka program akan keluar
+                        if (file == null) {
+                            Stage stage = (Stage) lblStatus.getScene().getWindow();
+                            stage.close();
+                        } else {
+                            // declare variabel
+                            IdentitasToko identitasToko = null;
+                            List<User> userList = null;
+                            List<Barang> barangList = null;
+                            List<Kerusakan> kerusakanList = null;
+                            List<Pelanggan> pelangganList = null;
+                            List<Servis> servisList = null;
+                            List<DetailKerusakan> detailKerusakanList = null;
 
-                        if (file != null) {
                             File[] listFiles = file.listFiles(); // untuk mengambil file yang ada di dalam path "Seryp Files"
                             if (listFiles != null) {
                                 for (File file1 : listFiles) {
@@ -195,50 +199,61 @@ public class SplashController extends SerypUtil implements Initializable {
                                     }
                                 }
                             }
-                        }
 
-                        // setting ulang base path seryp
-                        AlertBox.display("Failed to find Database", "Setting ulang path untuk \"Seryp Base Path\"");
-                        DirectoryChooser directoryChooser1 = new DirectoryChooser();
-                        File fileSerypBasePath = directoryChooser1.showDialog(new Stage());
+                            // jika file file bakcup tidak ditemukan
+                            if (identitasToko == null || userList == null || barangList == null || kerusakanList == null || pelangganList == null || servisList == null || detailKerusakanList == null) {
+                                AlertBox.display("Failed to find Database", "File-file backup tidak ada!");
+                                Stage stage = (Stage) lblStatus.getScene().getWindow();
+                                stage.close();
+                            } else {
+                                // setting ulang base path seryp
+                                AlertBox.display("Failed to find Database", "Setting ulang path untuk \"Seryp Base Path\"");
+                                DirectoryChooser directoryChooser1 = new DirectoryChooser();
+                                File fileSerypBasePath = directoryChooser1.showDialog(new Stage());
 
-                        if (fileSerypBasePath == null) { // jika user tidak memilih directory dan hanya menutup showDialog
-                            Stage stage = (Stage) lblStatus.getScene().getWindow();
-                            stage.close();
-                        } else {
-                            File createDir = new File(fileSerypBasePath.getAbsolutePath() + File.separator + "Seryp Files");
-                            AlertBox.display("Failed to find Database", "Path baru :  \"" + createDir.getAbsolutePath() + "\"");
+                                if (fileSerypBasePath == null) { // jika user tidak memilih directory dan hanya menutup showDialog
+                                    Stage stage = (Stage) lblStatus.getScene().getWindow();
+                                    stage.close();
+                                } else {
+                                    File createDir = new File(fileSerypBasePath.getAbsolutePath() + File.separator + "Seryp Files");
+                                    File createDirFotoProfil = new File(createDir.getAbsoluteFile() + File.separator + "Foto profil");
+                                    File createdDirBackup = new File(createDir.getAbsoluteFile() + File.separator + "Backup");
 
-                            if (createDir.mkdir()) {
-                                File createDirFotoProfil = new File(createDir.getAbsoluteFile() + File.separator + "Foto profil");
-                                File createdDirBackup = new File(createDir.getAbsoluteFile() + File.separator + "Backup");
+                                    AlertBox.display("Failed to find Database", "Path baru :  \"" + createDir.getAbsolutePath() + "\"");
 
-                                if (createDirFotoProfil.mkdir() && createdDirBackup.mkdir()) {
-                                    if (identitasToko != null) {
-                                        identitasToko.setSerypBasePath(createDir.getAbsolutePath());
-
-                                        try {
-                                            // membuat database pada saat semua directory terbuat
-                                            getUtil().createDatabase();
-
-                                            // Insert data yang sudah di read dari csv
-                                            new IdentitasTokoDao().add(identitasToko);
-                                            new UserDao().addAll(userList);
-                                            new BarangDao().addAll(barangList);
-                                            new KerusakanDao().addAll(kerusakanList);
-                                            new PelangganDao().addAll(pelangganList);
-                                            new ServisDao().addAll(servisList);
-                                            new DetailKerusakanDao().addAll(detailKerusakanList);
-
-                                            System.out.println( "berahasil");
-                                        } catch (SQLException e) {
-                                            AlertBox.display("Failed to find Database", e.getMessage());
-                                            e.printStackTrace();
-                                        }
-
-                                        AlertBox.display("Failed to find Database", "Berhasil me-restore database. \n Silahkan tutup dan buka ulang aplikasi Seryp");
+                                    // mengecek jika folder yang dipilih user berisi folder "Seryp Files"
+                                    if (createDir.exists()) {
+                                        // jika ada maka akan meminta untuk user menhapus atau pindah
+                                        AlertBox.display("Failed to find Database", "Folder yang dipilih berisi folder \"Seryp Files\". \n Silahkan pindah ke folder lain atau hapus yang lama!");
                                         Stage stage = (Stage) lblStatus.getScene().getWindow();
                                         stage.close();
+                                    } else {
+                                        if (createDir.mkdir()) {
+                                            if (createDirFotoProfil.mkdir() && createdDirBackup.mkdir()) {
+                                                identitasToko.setSerypBasePath(createDir.getAbsolutePath());
+
+                                                try {
+                                                    // membuat database pada saat semua directory terbuat
+                                                    getUtil().createDatabase();
+
+                                                    // Insert data yang sudah di read dari csv
+                                                    new IdentitasTokoDao().add(identitasToko);
+                                                    new UserDao().addAll(userList);
+                                                    new BarangDao().addAll(barangList);
+                                                    new KerusakanDao().addAll(kerusakanList);
+                                                    new PelangganDao().addAll(pelangganList);
+                                                    new ServisDao().addAll(servisList);
+                                                    new DetailKerusakanDao().addAll(detailKerusakanList);
+                                                } catch (SQLException e) {
+                                                    AlertBox.display("Failed to find Database", e.getMessage());
+                                                    e.printStackTrace();
+                                                }
+
+                                                AlertBox.display("Failed to find Database", "Berhasil me-restore database. \n Silahkan tutup dan buka ulang aplikasi Seryp");
+                                                Stage stage = (Stage) lblStatus.getScene().getWindow();
+                                                stage.close();
+                                            }
+                                        }
                                     }
                                 }
                             }

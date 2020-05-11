@@ -2,8 +2,7 @@ package seryp.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -43,15 +42,6 @@ public class PembayaranController extends SerypUtil implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        init();
-        cbPembayaranDPAction();
-        cbPembayaranTunaiAction();
-        btnCariAction();
-        btnBackAction();
-        btnKonfirmasiPembayaranAction();
-    }
-
-    private void init() {
         // instance required object
         kerusakanDao = new KerusakanDao();
         barangDao = new BarangDao();
@@ -70,174 +60,154 @@ public class PembayaranController extends SerypUtil implements Initializable {
         txtPembayaranTunai.setEditable(false);
     }
 
-    private void cbPembayaranDPAction() {
-        cbPembayaranDP.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                if (cbPembayaranDP.isSelected()) {
-                    txtPembayaranDP.setEditable(true);
+    @FXML
+    void btnCariAction() {
+        try {
+            if (!txtCariNoFaktur.getText().equals("")) {
+                ObservableList<KerusakanDanBarang> observableList = FXCollections.observableArrayList();
+                // untuk label bawah table
+                int totalEstimasiMin = 0;
+                int totalEstimasiMax = 0;
+                String noFaktur = txtCariNoFaktur.getText();
+                Servis servis = servisDao.get(noFaktur);
+
+                if (servis != null) {
+                    List<DetailKerusakan> list = detailKerusakanDao.get(noFaktur);
+
+                    // set data pelanggan
+                    Pelanggan pelanggan = pelangganDao.get(servis.getIdPelanggan());
+                    txtNamaPelanggan.setText(pelanggan.getNama());
+                    txtMerekLabel.setText(servis.getMerkLabel());
+
+                    // clean and reset component
+                    cbPembayaranDP.setDisable(false);
+                    cbPembayaranTunai.setDisable(false);
+                    cbPembayaranDP.setSelected(false);
+                    cbPembayaranTunai.setSelected(false);
+                    txtPembayaranDP.setText("");
+                    txtPembayaranTunai.setText("");
+
+                    // set jika pelanggan sudah membayar dp atau tunai
+                    if (servis.isStatusDP()) {
+                        // disable
+                        cbPembayaranDP.setDisable(true);
+                        txtPembayaranDP.setEditable(false);
+
+                        cbPembayaranDP.setSelected(true);
+                        txtPembayaranDP.setText(String.valueOf(servis.getUangDP()));
+                    }
+
+                    if (servis.isStatusPembayaran()) {
+                        //disable
+                        cbPembayaranTunai.setDisable(true);
+                        txtPembayaranTunai.setEditable(false);
+
+                        cbPembayaranTunai.setSelected(true);
+                        txtPembayaranTunai.setText(String.valueOf(servis.getUangPembayaran()));
+                    }
+
+                    for (DetailKerusakan detailKerusakan : list) {
+                        String kerusakanDanBarang, estimasi;
+                        String idKerusakan = detailKerusakan.getIdKerusakan();
+                        String idBarang = detailKerusakan.getIdBarang();
+                        int estimasiMin = detailKerusakan.getTotalEstimasiMin();
+                        int estimasiMax = detailKerusakan.getTotalEstimasiMax();
+
+                        Kerusakan kerusakan = kerusakanDao.get(idKerusakan);
+                        // jika barang yang diganti tidak ada
+                        if (idBarang == null) {
+                            kerusakanDanBarang = kerusakan.getNama();
+                        } else {
+                            Barang barang = barangDao.get(idBarang);
+                            kerusakanDanBarang = kerusakan.getNama() + " + " + barang.getNama() + " " + detailKerusakan.getUnit() + " unit";
+                        }
+                        estimasi = estimasiMin + " - " + estimasiMax;
+                        observableList.add(new KerusakanDanBarang(kerusakanDanBarang, estimasi));
+
+                        totalEstimasiMin += estimasiMin;
+                        totalEstimasiMax += estimasiMax;
+                    }
+
+                    // Set label bawah table
+                    lblEstimasi.setText("Rp. " + totalEstimasiMin + " - " + "Rp. " + totalEstimasiMax);
+
+                    // untuk menset nilai setiap cell (row) per column maka harus memberi sebuah PropertyValueFactory,
+                    // yang mana parameter pertama harus sama dengan variable pada kelas
+                    TableColumn<KerusakanDanBarang, ?> colListKerusakanDanBarang = tblKerusakanDanBarang.getColumns().get(0);
+                    colListKerusakanDanBarang.setCellValueFactory(new PropertyValueFactory<>("kerusakanDanBarang"));
+
+                    TableColumn<KerusakanDanBarang, ?> colEstimasi = tblKerusakanDanBarang.getColumns().get(1);
+                    colEstimasi.setCellValueFactory(new PropertyValueFactory<>("estimasi"));
+
+                    tblKerusakanDanBarang.setItems(observableList);
                 } else {
+                    AlertBox.display("Error", "No Faktur tidak ada, periksa kembali!");
+                }
+            } else {
+                AlertBox.display("Error", "No Faktur tidak boleh kosong");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void cbPembayaranDPAction() {
+        if (cbPembayaranDP.isSelected()) {
+            txtPembayaranDP.setEditable(true);
+        } else {
+            txtPembayaranDP.setEditable(false);
+        }
+    }
+
+    @FXML
+    void cbPembayaranTunaiAction() {
+        if (cbPembayaranTunai.isSelected()) {
+            txtPembayaranTunai.setEditable(true);
+        } else {
+            txtPembayaranTunai.setEditable(false);
+        }
+    }
+
+    @FXML
+    void btnBackAction() {
+        getWindowControl().moveToScene(btnBack, "karyawan");
+    }
+
+    @FXML
+    void btnKonfirmasiPembayaranAction() {
+        try {
+            if (!txtCariNoFaktur.getText().equals("")) {
+                String noFaktur = txtCariNoFaktur.getText();
+                Servis servis = servisDao.get(noFaktur);
+
+                // cek jika pelanggan sudah membayar maka tombolok konfimasi pembayaran tidak melakukan apapun
+                if (servis.isStatusPembayaran()) {
+                    cbPembayaranDP.setDisable(true);
+                    cbPembayaranTunai.setDisable(true);
                     txtPembayaranDP.setEditable(false);
-                }
-            }
-        });
-    }
-
-    private void cbPembayaranTunaiAction() {
-        cbPembayaranTunai.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                if (cbPembayaranTunai.isSelected()) {
-                    txtPembayaranTunai.setEditable(true);
-                } else {
                     txtPembayaranTunai.setEditable(false);
-                }
-            }
-        });
-    }
-
-    private void btnCariAction() {
-        btnCari.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                try {
-                    if (!txtCariNoFaktur.getText().equals("")) {
-                        ObservableList<KerusakanDanBarang> observableList = FXCollections.observableArrayList();
-                        // untuk label bawah table
-                        int totalEstimasiMin = 0;
-                        int totalEstimasiMax = 0;
-                        String noFaktur = txtCariNoFaktur.getText();
-                        Servis servis = servisDao.get(noFaktur);
-
-                        if (servis != null) {
-                            List<DetailKerusakan> list = detailKerusakanDao.get(noFaktur);
-
-                            // set data pelanggan
-                            Pelanggan pelanggan = pelangganDao.get(servis.getIdPelanggan());
-                            txtNamaPelanggan.setText(pelanggan.getNama());
-                            txtMerekLabel.setText(servis.getMerkLabel());
-
-                            // clean and reset component
-                            cbPembayaranDP.setDisable(false);
-                            cbPembayaranTunai.setDisable(false);
-                            cbPembayaranDP.setSelected(false);
-                            cbPembayaranTunai.setSelected(false);
-                            txtPembayaranDP.setText("");
-                            txtPembayaranTunai.setText("");
-
-                            // set jika pelanggan sudah membayar dp atau tunai
-                            if (servis.isStatusDP()) {
-                                // disable
-                                cbPembayaranDP.setDisable(true);
-                                txtPembayaranDP.setEditable(false);
-
-                                cbPembayaranDP.setSelected(true);
-                                txtPembayaranDP.setText(String.valueOf(servis.getUangDP()));
-                            }
-
-                            if (servis.isStatusPembayaran()) {
-                                //disable
-                                cbPembayaranTunai.setDisable(true);
-                                txtPembayaranTunai.setEditable(false);
-
-                                cbPembayaranTunai.setSelected(true);
-                                txtPembayaranTunai.setText(String.valueOf(servis.getUangPembayaran()));
-                            }
-
-                            for (DetailKerusakan detailKerusakan : list) {
-                                String kerusakanDanBarang, estimasi;
-                                String idKerusakan = detailKerusakan.getIdKerusakan();
-                                String idBarang = detailKerusakan.getIdBarang();
-                                int estimasiMin = detailKerusakan.getTotalEstimasiMin();
-                                int estimasiMax = detailKerusakan.getTotalEstimasiMax();
-
-                                Kerusakan kerusakan = kerusakanDao.get(idKerusakan);
-                                // jika barang yang diganti tidak ada
-                                if (idBarang == null){
-                                    kerusakanDanBarang = kerusakan.getNama();
-                                } else {
-                                    Barang barang = barangDao.get(idBarang);
-                                    kerusakanDanBarang = kerusakan.getNama() + " + " + barang.getNama() + " " + detailKerusakan.getUnit() + " unit";
-                                }
-                                estimasi = estimasiMin + " - " + estimasiMax;
-                                observableList.add(new KerusakanDanBarang(kerusakanDanBarang, estimasi));
-
-                                totalEstimasiMin += estimasiMin;
-                                totalEstimasiMax += estimasiMax;
-                            }
-
-                            // Set label bawah table
-                            lblEstimasi.setText("Rp. " + totalEstimasiMin + " - " + "Rp. " + totalEstimasiMax);
-
-                            // untuk menset nilai setiap cell (row) per column maka harus memberi sebuah PropertyValueFactory,
-                            // yang mana parameter pertama harus sama dengan variable pada kelas
-                            TableColumn<KerusakanDanBarang, ?> colListKerusakanDanBarang = tblKerusakanDanBarang.getColumns().get(0);
-                            colListKerusakanDanBarang.setCellValueFactory(new PropertyValueFactory<>("kerusakanDanBarang"));
-
-                            TableColumn<KerusakanDanBarang, ?> colEstimasi = tblKerusakanDanBarang.getColumns().get(1);
-                            colEstimasi.setCellValueFactory(new PropertyValueFactory<>("estimasi"));
-
-                            tblKerusakanDanBarang.setItems(observableList);
-                        } else {
-                            AlertBox.display("Error", "No Faktur tidak ada, periksa kembali!");
-                        }
-                    } else {
-                        AlertBox.display("Error", "No Faktur tidak boleh kosong");
+                    AlertBox.display("Tidak ada aksi", "Pelanggan sudah melakukan pembayaran");
+                } else if (cbPembayaranDP.isSelected() || cbPembayaranTunai.isSelected()) {
+                    if (cbPembayaranDP.isSelected()) {
+                        int pembayaranDP = getValidation().validateInteger(txtPembayaranDP.getText());
+                        servisDao.setPembayaranDP(noFaktur, pembayaranDP);
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
-    private void btnBackAction() {
-        btnBack.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                getWindowControl().moveToScene(btnBack, "karyawan");
-            }
-        });
-    }
-
-    private void btnKonfirmasiPembayaranAction() {
-        btnKonfirmasiPembayaran.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                try {
-                    if (!txtCariNoFaktur.getText().equals("")) {
-                        String noFaktur = txtCariNoFaktur.getText();
-                        Servis servis = servisDao.get(noFaktur);
-
-                        // cek jika pelanggan sudah membayar maka tombolok konfimasi pembayaran tidak melakukan apapun
-                        if (servis.isStatusPembayaran()) {
-                            cbPembayaranDP.setDisable(true);
-                            cbPembayaranTunai.setDisable(true);
-                            txtPembayaranDP.setEditable(false);
-                            txtPembayaranTunai.setEditable(false);
-                            AlertBox.display("Tidak ada aksi", "Pelanggan sudah melakukan pembayaran");
-                        } else if (cbPembayaranDP.isSelected() || cbPembayaranTunai.isSelected()) {
-                            if (cbPembayaranDP.isSelected()) {
-                                int pembayaranDP = getValidation().validateInteger(txtPembayaranDP.getText());
-                                servisDao.setPembayaranDP(noFaktur, pembayaranDP);
-                            }
-
-                            if (cbPembayaranTunai.isSelected()) {
-                                int pembayaranTunai = getValidation().validateInteger(txtPembayaranTunai.getText());
-                                servisDao.setPembayaranTunai(noFaktur, pembayaranTunai);
-                            }
-                            AlertBox.display("Berhasil", "Konfimasi Pembayaran pelanggan berhasil");
-                            getWindowControl().moveToScene(btnKonfirmasiPembayaran, "karyawan");
-                        } else {
-                            AlertBox.display("Error", "Centang salah satu pembayaran!");
-                        }
-                    } else {
-                        AlertBox.display("Error", "No Faktur tidak boleh kosong");
+                    if (cbPembayaranTunai.isSelected()) {
+                        int pembayaranTunai = getValidation().validateInteger(txtPembayaranTunai.getText());
+                        servisDao.setPembayaranTunai(noFaktur, pembayaranTunai);
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                    AlertBox.display("Berhasil", "Konfimasi Pembayaran pelanggan berhasil");
+                    getWindowControl().moveToScene(btnKonfirmasiPembayaran, "karyawan");
+                } else {
+                    AlertBox.display("Error", "Centang salah satu pembayaran!");
                 }
+            } else {
+                AlertBox.display("Error", "No Faktur tidak boleh kosong");
             }
-        });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

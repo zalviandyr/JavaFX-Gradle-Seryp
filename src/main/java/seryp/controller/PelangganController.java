@@ -43,15 +43,6 @@ public class PelangganController extends SerypUtil implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        init();
-        btnUpdateAction();
-        btnAddAction();
-        btnDeleteAction();
-        btnBackAction();
-        btnNextAction();
-    }
-
-    private void init() {
         // Instance object required
         pelangganDao = new PelangganDao();
 

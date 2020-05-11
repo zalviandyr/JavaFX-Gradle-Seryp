@@ -2,8 +2,6 @@ package seryp.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -21,10 +19,8 @@ import seryp.utils.SerypUtil;
 import seryp.utils.boxes.ConfirmBox;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -77,53 +73,6 @@ public class ListController extends SerypUtil implements Initializable {
         datePickerTanggalHariIni.setEditable(false);
         datePickerTanggalBatasHari.setValue(LocalDate.now().plusDays(20));
         datePickerTanggalBatasHari.setEditable(false);
-    }
-
-    private void setTblListKerusakan() {
-        try {
-            ObservableList<KerusakanDanBarang> observableList = FXCollections.observableArrayList();
-            // untuk label bawah table
-            int totalEstimasiMin = 0;
-            int totalEstimasiMax = 0;
-
-            for (DetailKerusakan detailKerusakan : ListController.listDetailKerusakan) {
-                String kerusakanDanBarang, estimasi;
-                String idKerusakan = detailKerusakan.getIdKerusakan();
-                String idBarang = detailKerusakan.getIdBarang();
-                int unit = detailKerusakan.getUnit();
-                int estimasiMin = detailKerusakan.getTotalEstimasiMin();
-                int estimasiMax = detailKerusakan.getTotalEstimasiMax();
-
-                Kerusakan kerusakan = kerusakanDao.get(idKerusakan);
-                // jika barang yang diganti ada
-                if (idBarang.equals("null")) {
-                    kerusakanDanBarang = kerusakan.getNama();
-                } else {
-                    Barang barang = barangDao.get(idBarang);
-                    kerusakanDanBarang = kerusakan.getNama() + " + " + barang.getNama() + " " + unit + " Unit";
-                }
-                estimasi = "Rp. " + estimasiMin + " - " + "Rp. " + estimasiMax;
-                observableList.add(new KerusakanDanBarang(kerusakanDanBarang, estimasi));
-
-                totalEstimasiMin += estimasiMin;
-                totalEstimasiMax += estimasiMax;
-            }
-
-            // Set label bawah table
-            lblTotalEstimasi.setText("Rp. " + totalEstimasiMin + " - " + "Rp. " + totalEstimasiMax);
-
-            // untuk menset nilai setiap cell (row) per column maka harus memberi sebuah PropertyValueFactory,
-            // yang mana parameter pertama harus sama dengan variable pada kelas
-            TableColumn<KerusakanDanBarang, ?> colListKerusakanDanBarang = tblListKerusakan.getColumns().get(0);
-            colListKerusakanDanBarang.setCellValueFactory(new PropertyValueFactory<>("kerusakanDanBarang"));
-
-            TableColumn<KerusakanDanBarang, ?> colEstimasi = tblListKerusakan.getColumns().get(1);
-            colEstimasi.setCellValueFactory(new PropertyValueFactory<>("estimasi"));
-
-            tblListKerusakan.setItems(observableList);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML
@@ -217,6 +166,53 @@ public class ListController extends SerypUtil implements Initializable {
                     JasperExportManager.exportReportToPdfStream(jasperPrint, new FileOutputStream(filetoSave));
             }
         } catch (SQLException | FileNotFoundException | JRException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void setTblListKerusakan() {
+        try {
+            ObservableList<KerusakanDanBarang> observableList = FXCollections.observableArrayList();
+            // untuk label bawah table
+            int totalEstimasiMin = 0;
+            int totalEstimasiMax = 0;
+
+            for (DetailKerusakan detailKerusakan : ListController.listDetailKerusakan) {
+                String kerusakanDanBarang, estimasi;
+                String idKerusakan = detailKerusakan.getIdKerusakan();
+                String idBarang = detailKerusakan.getIdBarang();
+                int unit = detailKerusakan.getUnit();
+                int estimasiMin = detailKerusakan.getTotalEstimasiMin();
+                int estimasiMax = detailKerusakan.getTotalEstimasiMax();
+
+                Kerusakan kerusakan = kerusakanDao.get(idKerusakan);
+                // jika barang yang diganti ada
+                if (idBarang.equals("null")) {
+                    kerusakanDanBarang = kerusakan.getNama();
+                } else {
+                    Barang barang = barangDao.get(idBarang);
+                    kerusakanDanBarang = kerusakan.getNama() + " + " + barang.getNama() + " " + unit + " Unit";
+                }
+                estimasi = "Rp. " + estimasiMin + " - " + "Rp. " + estimasiMax;
+                observableList.add(new KerusakanDanBarang(kerusakanDanBarang, estimasi));
+
+                totalEstimasiMin += estimasiMin;
+                totalEstimasiMax += estimasiMax;
+            }
+
+            // Set label bawah table
+            lblTotalEstimasi.setText("Rp. " + totalEstimasiMin + " - " + "Rp. " + totalEstimasiMax);
+
+            // untuk menset nilai setiap cell (row) per column maka harus memberi sebuah PropertyValueFactory,
+            // yang mana parameter pertama harus sama dengan variable pada kelas
+            TableColumn<KerusakanDanBarang, ?> colListKerusakanDanBarang = tblListKerusakan.getColumns().get(0);
+            colListKerusakanDanBarang.setCellValueFactory(new PropertyValueFactory<>("kerusakanDanBarang"));
+
+            TableColumn<KerusakanDanBarang, ?> colEstimasi = tblListKerusakan.getColumns().get(1);
+            colEstimasi.setCellValueFactory(new PropertyValueFactory<>("estimasi"));
+
+            tblListKerusakan.setItems(observableList);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

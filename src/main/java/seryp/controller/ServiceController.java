@@ -103,6 +103,14 @@ public class ServiceController extends SerypUtil implements Initializable {
             Barang barang = cboKomponenDiganti.getValue();
             barang = barangDao.get(barang.getIdBarang());
 
+            if (barang.getStatus().equals("Non Ready")) {
+                AlertBox.display("Barang Non Ready", "Barang tersebut stoknya masih tidak ada.\n Maka unit yang bisa dipakai hanya 0");
+                txtUnit.setText("0");
+                txtUnit.setDisable(true);
+            } else {
+                txtUnit.setDisable(false);
+            }
+
             txtUnitAda.setText(String.valueOf(barang.getStok()));
             txtAreaDetailKomponen.setText(barang.getDeskripsi());
         } catch (SQLException | NullPointerException e) {

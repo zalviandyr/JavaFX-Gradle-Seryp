@@ -39,10 +39,6 @@ public class InstalasiController extends SerypUtil implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        init();
-    }
-
-    private void init() {
         // init radio button
         ToggleGroup toggleGroup = new ToggleGroup();
         rbLaki.setToggleGroup(toggleGroup);

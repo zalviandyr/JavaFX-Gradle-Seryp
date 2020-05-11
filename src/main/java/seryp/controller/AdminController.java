@@ -23,6 +23,7 @@ import seryp.utils.boxes.LaporanHarianBox;
 import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,27 +72,18 @@ public class AdminController extends SerypUtil implements Initializable {
     void btnBackupAction() {
         try {
             IdentitasToko identitasToko = new IdentitasTokoDao().get();
-            String backupPath = identitasToko.getSerypBasePath() + File.separator + "Backup";
+            String backupPath = identitasToko.getSerypBasePath() + File.separator + "Backup" + File.separator + LocalDate.now().toString();
 
-            List<User> userList = new UserDao().getAll();
-            List<Barang> barangList = new BarangDao().getAll();
-            List<Kerusakan> kerusakanList = new KerusakanDao().getAll();
-            List<Pelanggan> pelangganList = new PelangganDao().getAll();
-            List<Servis> servisList = new ServisDao().getAll();
-            List<DetailKerusakan> detailKerusakanList = new DetailKerusakanDao().getAll();
-
-            getFileHandler().backupIdentitasTokoSerypBk(identitasToko, backupPath);
-            getFileHandler().backupUserSerypBk(userList, backupPath);
-            getFileHandler().backupBarangSerypBk(barangList, backupPath);
-            getFileHandler().backupKerusakanSerypBk(kerusakanList, backupPath);
-            getFileHandler().backupPelangganSerypBk(pelangganList, backupPath);
-            getFileHandler().backupServisSerypBk(servisList, backupPath);
-            getFileHandler().backupDetailKerusakanSerypBk(detailKerusakanList, backupPath);
-
-            AlertBox.display("Berhasil Backup", "Hasil backup tersimpan di \"" + backupPath + "\"");
+            File file = new File(backupPath);
+            if (file.exists()) {
+                backup(identitasToko, backupPath);
+            } else {
+                if (file.mkdir()) {
+                    backup(identitasToko, backupPath);
+                }
+            }
         } catch (SQLException e) {
-//                    e.printStackTrace();
-            AlertBox.display("Gagal Backup", "Tidak ada yang dibackup!");
+            e.printStackTrace();
         }
     }
 
@@ -203,6 +195,29 @@ public class AdminController extends SerypUtil implements Initializable {
 
         if (option) {
             getWindowControl().moveToScene(btnLogOut, "login");
+        }
+    }
+
+    void backup(IdentitasToko identitasToko, String backupPath) {
+        try {
+            List<User> userList = new UserDao().getAll();
+            List<Barang> barangList = new BarangDao().getAll();
+            List<Kerusakan> kerusakanList = new KerusakanDao().getAll();
+            List<Pelanggan> pelangganList = new PelangganDao().getAll();
+            List<Servis> servisList = new ServisDao().getAll();
+            List<DetailKerusakan> detailKerusakanList = new DetailKerusakanDao().getAll();
+
+            getFileHandler().backupIdentitasTokoSerypBk(identitasToko, backupPath);
+            getFileHandler().backupUserSerypBk(userList, backupPath);
+            getFileHandler().backupBarangSerypBk(barangList, backupPath);
+            getFileHandler().backupKerusakanSerypBk(kerusakanList, backupPath);
+            getFileHandler().backupPelangganSerypBk(pelangganList, backupPath);
+            getFileHandler().backupServisSerypBk(servisList, backupPath);
+            getFileHandler().backupDetailKerusakanSerypBk(detailKerusakanList, backupPath);
+
+            AlertBox.display("Berhasil Backup", "Hasil backup tersimpan di \"" + backupPath + "\"");
+        } catch (SQLException e) {
+            AlertBox.display("Gagal Backup", "Tidak ada yang dibackup!");
         }
     }
 }
