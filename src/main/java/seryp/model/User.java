@@ -15,6 +15,13 @@ public class User {
     private LocalDate lastLogin;
     private LocalDate created;
 
+    public User() {}
+
+    public User(String username, String nama) {
+        this.username = username;
+        this.nama = nama;
+    }
+
     public String getUsername() {
         return username;
     }

@@ -1,9 +1,7 @@
 package seryp.controller;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -19,7 +17,6 @@ import seryp.utils.boxes.ConfirmBox;
 import seryp.utils.boxes.DialogBoxServis;
 
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -46,7 +43,6 @@ public class ServiceController extends SerypUtil implements Initializable {
     private BarangDao barangDao;
     private ServisDao servisDao;
     private Servis servis;
-    private DetailKerusakan detailKerusakan;
     private List<DetailKerusakan> listDetailKerusakan;
     public static User userLogin; // data yang dikirim KaryawanController
     public static String namaPelanggan;
@@ -54,17 +50,6 @@ public class ServiceController extends SerypUtil implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        init();
-        getMerekLabel();
-        btnBackAction();
-        btnTambahkanKerusakanAction();
-        btnDoneAction();
-        cboKerusakanAction();
-        cboKomponenDigantiAction();
-        cbKomponenDigantiAction();
-    }
-
-    private void init() {
         // Instance object required
         kerusakanDao = new KerusakanDao();
         barangDao = new BarangDao();
@@ -76,6 +61,9 @@ public class ServiceController extends SerypUtil implements Initializable {
 
         // set sideBar
         getWindowControl().setSideBar(sideBar, ServiceController.userLogin);
+
+        // get merekLabel
+        getMerekLabel();
 
         // set editable text field and text area
         txtNamaPelanggan.setEditable(false);
@@ -96,9 +84,111 @@ public class ServiceController extends SerypUtil implements Initializable {
         cboKomponenDiganti.setDisable(true);
     }
 
-    private void getMerekLabel() {
+    @FXML
+    void cboKerusakanAction() {
         try {
-            // jiak merek label masih kosong
+            Kerusakan kerusakan = cboKerusakan.getValue();
+            kerusakan = kerusakanDao.get(kerusakan.getIdKerusakan());
+
+            txtAreaDetailKerusakan.setText(kerusakan.getDeskripsi());
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Ada yang null nih!");
+//                    e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void cboKomponenDigantiAction() {
+        try {
+            Barang barang = cboKomponenDiganti.getValue();
+            barang = barangDao.get(barang.getIdBarang());
+
+            txtUnitAda.setText(String.valueOf(barang.getStok()));
+            txtAreaDetailKomponen.setText(barang.getDeskripsi());
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("Ada yang null nih!");
+//                    e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void cbKomponenDigantiAction() {
+        if (cbKomponenDiganti.isSelected()) {
+            cboKomponenDiganti.setDisable(false);
+            txtUnit.setEditable(true);
+        } else {
+            cboKomponenDiganti.setDisable(true);
+            txtUnit.setEditable(false);
+        }
+        txtAreaDetailKomponen.setText("");
+    }
+
+    @FXML
+    void btnBackAction() {
+        boolean option = ConfirmBox.display("Yakin ?", "Semua kerusakan yang diinputkan akan hilang. \n Apakah yakin untuk kembali ?");
+        if (option)
+            getWindowControl().moveToScene(btnBack, "pelanggan");
+    }
+
+    @FXML
+    void btnTambahkanKerusakanAction() {
+        try {
+            String noFaktur = servisDao.getNoFaktur(txtMerekLabel.getText());
+
+            if (noFaktur == null) {
+                // Add no faktur baru jika merek label tidak ada
+                noFaktur = getUtil().getCustomId(servisDao.getAllId(), "F");
+                String username = ServiceController.userLogin.getUsername();
+                String idPelanggan = ServiceController.idPelanggan;
+                String merekLabel = txtMerekLabel.getText();
+                LocalDate tanggalHariIni = LocalDate.now();
+                LocalDate batasHari = LocalDate.now().plusDays(20);
+                boolean statusDp = false;
+                int uangDp = 0;
+                boolean statusPembayaran = false;
+                int uangPembayaran = 0;
+
+                servis = new Servis();
+                servis.setNoFaktur(noFaktur);
+                servis.setUsername(username);
+                servis.setIdPelanggan(idPelanggan);
+                servis.setMerkLabel(merekLabel);
+                servis.setTanggalHariIni(tanggalHariIni);
+                servis.setBatasHari(batasHari);
+                servis.setStatusDP(statusDp);
+                servis.setUangDP(uangDp);
+                servis.setStatusPembayaran(statusPembayaran);
+                servis.setUangPembayaran(uangPembayaran);
+            }
+            // setelah no faktur baru ditambah, maka akan menambah data ke detail kerusakan
+            addListDetailKerusakan(noFaktur);
+
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void btnDoneAction() {
+        if (listDetailKerusakan.isEmpty()) {
+            AlertBox.display("Gagal", "Gagal pindah karena kerusakan belum diinputkan");
+        } else {
+            ListController.servis = servis;
+            ListController.listDetailKerusakan = listDetailKerusakan;
+            getWindowControl().moveToScene(btnDone, "list");
+        }
+    }
+
+    void cleanField() {
+        txtAreaDetailKerusakan.setText("");
+        txtUnit.setText("1");
+        txtAreaDetailKomponen.setText("");
+        txtUnitAda.setText("");
+    }
+
+    void getMerekLabel() {
+        try {
+            // jika merek label masih kosong
             if (txtMerekLabel.getText().equals("")) {
                 // mengambil sudah berapa kali pelanggan tersebut menservis
                 int servisKe = servisDao.getCountServisPelanggan(idPelanggan) + 1;
@@ -109,135 +199,9 @@ public class ServiceController extends SerypUtil implements Initializable {
         }
     }
 
-    private void btnBackAction() {
-        btnBack.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                boolean option = ConfirmBox.display("Yakin ?", "Semua kerusakan yang diinputkan akan hilang. \n Apakah yakin untuk kembali ?");
-                if (option)
-                    getWindowControl().moveToScene(btnBack, "pelanggan");
-            }
-        });
-    }
-
-    private void btnTambahkanKerusakanAction() {
-        btnTambahkanKerusakan.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                try {
-                    String noFaktur = servisDao.getNoFaktur(txtMerekLabel.getText());
-
-                    if (noFaktur == null) {
-                        // Add no faktur baru jika merek label tidak ada
-                        noFaktur = getUtil().getCustomId(getNoFaktur(), "F");
-                        String username = ServiceController.userLogin.getUsername();
-                        String idPelanggan = ServiceController.idPelanggan;
-                        String merekLabel = txtMerekLabel.getText();
-                        LocalDate tanggalHariIni = LocalDate.now();
-                        LocalDate batasHari = LocalDate.now().plusDays(20);
-                        boolean statusDp = false;
-                        int uangDp = 0;
-                        boolean statusPembayaran = false;
-                        int uangPembayaran = 0;
-
-                        servis = new Servis();
-                        servis.setNoFaktur(noFaktur);
-                        servis.setUsername(username);
-                        servis.setIdPelanggan(idPelanggan);
-                        servis.setMerkLabel(merekLabel);
-                        servis.setTanggalHariIni(tanggalHariIni);
-                        servis.setBatasHari(batasHari);
-                        servis.setStatusDP(statusDp);
-                        servis.setUangDP(uangDp);
-                        servis.setStatusPembayaran(statusPembayaran);
-                        servis.setUangPembayaran(uangPembayaran);
-                    }
-                    // setelah no faktur baru ditambah, maka akan menambah data ke detail kerusakan
-                    addListDetailKerusakan(noFaktur);
-
-                } catch (SQLException | NullPointerException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    private void btnDoneAction() {
-        btnDone.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                if (listDetailKerusakan.isEmpty()) {
-                    AlertBox.display("Gagal", "Gagal pindah karena kerusakan belum diinputkan");
-                } else {
-                    ListController.servis = servis;
-                    ListController.listDetailKerusakan = listDetailKerusakan;
-                    getWindowControl().moveToScene(btnDone, "list");
-                }
-            }
-        });
-    }
-
-    private void cboKerusakanAction() {
-        cboKerusakan.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                try {
-                    Kerusakan kerusakan = cboKerusakan.getValue();
-                    kerusakan = kerusakanDao.get(kerusakan.getIdKerusakan());
-
-                    txtAreaDetailKerusakan.setText(kerusakan.getDeskripsi());
-                } catch (SQLException | NullPointerException e) {
-                    System.out.println("Ada yang null nih!");
-//                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    private void cboKomponenDigantiAction() {
-        cboKomponenDiganti.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                try {
-                    Barang barang = cboKomponenDiganti.getValue();
-                    barang = barangDao.get(barang.getIdBarang());
-
-                    txtUnitAda.setText(String.valueOf(barang.getStok()));
-                    txtAreaDetailKomponen.setText(barang.getDeskripsi());
-                } catch (SQLException | NullPointerException e) {
-                    System.out.println("Ada yang null nih!");
-//                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    private void cbKomponenDigantiAction() {
-        cbKomponenDiganti.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                if (cbKomponenDiganti.isSelected()) {
-                    cboKomponenDiganti.setDisable(false);
-                    txtUnit.setEditable(true);
-                } else {
-                    cboKomponenDiganti.setDisable(true);
-                    txtUnit.setEditable(false);
-                }
-                txtAreaDetailKomponen.setText("");
-            }
-        });
-    }
-
-    void cleanField() {
-        txtAreaDetailKerusakan.setText("");
-        txtUnit.setText("1");
-        txtAreaDetailKomponen.setText("");
-        txtUnitAda.setText("");
-    }
-
     void addListDetailKerusakan(String noFaktur) {
         try {
-            detailKerusakan = new DetailKerusakan();
+            DetailKerusakan detailKerusakan = new DetailKerusakan();
             Kerusakan kerusakan = cboKerusakan.getValue();
             kerusakan = kerusakanDao.get(kerusakan.getIdKerusakan());
 
@@ -343,21 +307,5 @@ public class ServiceController extends SerypUtil implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    List<String> getNoFaktur() {
-        try {
-            List<String> listId = new ArrayList<>();
-
-            ResultSet resultSet = servisDao.getAllId();
-            while (resultSet.next()) {
-                listId.add(resultSet.getString(1));
-            }
-
-            return listId;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }

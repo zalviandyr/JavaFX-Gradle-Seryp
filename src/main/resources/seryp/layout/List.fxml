@@ -138,13 +138,13 @@
                                     <Label text="Tanggal Batas Hari" GridPane.columnIndex="1" />
                                     <DatePicker fx:id="datePickerTanggalBatasHari" prefHeight="25.0" prefWidth="344.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <DatePicker fx:id="datePickerTanggalHariIni" prefHeight="25.0" prefWidth="331.0" GridPane.rowIndex="1" />
-                                    <Button fx:id="btnBack" mnemonicParsing="false" prefHeight="25.0" prefWidth="354.0" text="Back" GridPane.rowIndex="2">
+                                    <Button fx:id="btnBack" mnemonicParsing="false" onAction="#btnBackAction" prefHeight="25.0" prefWidth="354.0" text="Back" GridPane.rowIndex="2">
                                        <styleClass>
                                           <String fx:value="seryp-round" />
                                           <String fx:value="seryp-btn-primary" />
                                        </styleClass>
                                     </Button>
-                                    <Button fx:id="btnCetakStruk" mnemonicParsing="false" prefHeight="25.0" prefWidth="384.0" text="Cetak Struk" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <Button fx:id="btnCetakStruk" mnemonicParsing="false" onAction="#btnCetakStrukAction" prefHeight="25.0" prefWidth="384.0" text="Cetak Struk" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                        <styleClass>
                                           <String fx:value="seryp-round" />
                                           <String fx:value="seryp-btn-primary" />

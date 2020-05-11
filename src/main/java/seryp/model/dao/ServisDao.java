@@ -62,9 +62,15 @@ public class ServisDao {
         return servisList;
     }
 
-    public ResultSet getAllId() throws SQLException {
+    public List<String> getAllId() throws SQLException {
         String sql = "SELECT RIGHT(noFaktur, 3) FROM servis ORDER BY noFaktur ASC";
-        return CONN.createStatement().executeQuery(sql);
+        ResultSet resultSet = CONN.createStatement().executeQuery(sql);
+
+        List<String> list = new ArrayList<>();
+        while (resultSet.next()) {
+            list.add(resultSet.getString(1));
+        }
+        return list;
     }
 
     public int getCountServisPelanggan(String idPelanggan) throws SQLException {

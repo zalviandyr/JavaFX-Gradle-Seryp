@@ -115,7 +115,7 @@ public class KerusakanController extends SerypUtil implements Initializable {
         // cleaning
         txtCariKerusakan.setText("");
         txtId.setText("");
-        cleanComboBoxResult();
+        getFieldControl().cleanComboBoxResult(cboResult);
 
         if (toggleBtnCariKerusakan.isSelected()) {
             // change style button
@@ -157,7 +157,7 @@ public class KerusakanController extends SerypUtil implements Initializable {
 
             kerusakanDao.update(kerusakan);
             cleanField();
-            cleanComboBoxResult();
+            getFieldControl().cleanComboBoxResult(cboResult);
             AlertBox.display("Berhasil Update", "Berhasil update data kerusakan");
         } catch (SQLException | NullPointerException e) {
             AlertBox.display("Gagal Update", "Gagal update data kerusakan");
@@ -201,7 +201,7 @@ public class KerusakanController extends SerypUtil implements Initializable {
                     kerusakanDao.delete(id);
 
                     cleanField();
-                    cleanComboBoxResult();
+                    getFieldControl().cleanComboBoxResult(cboResult);
                     AlertBox.display("Berhasil Delete", "Berhasil menghapus data");
                 }
             }
@@ -249,9 +249,5 @@ public class KerusakanController extends SerypUtil implements Initializable {
         cboResult.setItems(observableList);
         cboResult.setCellFactory(cellCallback);
         cboResult.setButtonCell(cellCallback.call(null));
-    }
-
-    void cleanComboBoxResult() {
-        cboResult.getItems().clear();
     }
 }

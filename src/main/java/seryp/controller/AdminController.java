@@ -1,17 +1,12 @@
 package seryp.controller;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.InnerShadow;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import net.sf.jasperreports.engine.util.JRLoader;
@@ -55,7 +50,7 @@ public class AdminController extends SerypUtil implements Initializable {
         laporanDao = new LaporanDao();
 
         // set effect inner shadow btnUser, btnBarang, btnKerusakan;
-        setEffectInnerShadow(btnUser, btnBarang, btnKerusakan);
+        getUtil().setEffectInnerShadow(btnUser, btnBarang, btnKerusakan);
 
         // set topBar
         getWindowControl().setTopBar(topBar);
@@ -208,24 +203,6 @@ public class AdminController extends SerypUtil implements Initializable {
 
         if (option) {
             getWindowControl().moveToScene(btnLogOut, "login");
-        }
-    }
-
-    private void setEffectInnerShadow(Button... buttons) {
-        for (Button button : buttons) {
-            button.setOnMouseEntered(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    button.setEffect(new InnerShadow(BlurType.THREE_PASS_BOX, Color.BLACK, 10, 0, 0, 0));
-                }
-            });
-
-            button.setOnMouseExited(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    button.setEffect(null);
-                }
-            });
         }
     }
 }

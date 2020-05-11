@@ -1,13 +1,9 @@
 package seryp.controller;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -51,7 +47,7 @@ public class UserController extends SerypUtil implements Initializable {
     public RadioButton rbLaki;
     public RadioButton rbPerempuan;
     public ComboBox<String> cboStatusUser;
-    public ComboBox<String> cboResult;
+    public ComboBox<User> cboResult;
     private UserDao userDao;
     public static User userLogin; // data yang dikirim dari AdminController
 
@@ -82,7 +78,7 @@ public class UserController extends SerypUtil implements Initializable {
         datePickerTanggalLahir.setEditable(false);
 
         // Set combo box statusKaryawan
-        setComboBoxStatusUser();
+        getFieldControl().setComboBoxStatus(cboStatusUser, "Status User", "Admin", "Karyawan Aktif", "Karyawan Tidak Aktif");
 
         // set button update and delete invisible
         btnUpdate.setVisible(false);
@@ -98,7 +94,7 @@ public class UserController extends SerypUtil implements Initializable {
 
     @FXML
     void btnCariAction() {
-        ObservableList<String> observableList;
+        ObservableList<User> observableList;
 
         try {
             if (txtCariUser.getText().equals("")) {
@@ -116,7 +112,7 @@ public class UserController extends SerypUtil implements Initializable {
 
     @FXML
     void cboResultAction() {
-        /**
+        /*
          * Avoid error null pointer
          * Karena pada saat setelah melakukan pencarian lagi maka cboResult akan tereksekusi otomatis (masih belum tau kenapa),
          * yang mengakibatkan adanya nilai kembalian yang null
@@ -125,9 +121,10 @@ public class UserController extends SerypUtil implements Initializable {
         try {
             cleanField();
             // cboResult bisa saja mengembalikan nilai null, maka dari itu memakai exception
-            String username = cboResult.getValue(); // possible NullPointer
+            User user = cboResult.getValue(); // possible NullPointer
+            String username = user.getUsername();
 
-            User user = userDao.get(username);
+            user = userDao.get(username);
             txtUsername.setText(user.getUsername());
             txtPassword.setText(user.getPassword());
             txtNama.setText(user.getNama());
@@ -157,24 +154,30 @@ public class UserController extends SerypUtil implements Initializable {
     void toggleBtnCariUserAction() {
         // cleaning
         txtCariUser.setText("");
-        cleanComboBoxResult();
+        getFieldControl().cleanComboBoxResult(cboResult);
 
         if (toggleBtnCariUser.isSelected()) {
             // change style button
             toggleBtnCariUser.getStyleClass().remove("seryp-btn-primary");
             toggleBtnCariUser.getStyleClass().add("seryp-btn-secondary");
+
             btnUpdate.setVisible(true);
             btnAdd.setVisible(false);
             btnDelete.setVisible(true);
+            txtPassword.setEditable(false); // set password field cannot edit
+            txtPassword2.setEditable(false); // set text field cannot edit
             txtUsername.setEditable(false); // set username cannot edit
             paneCariUser.setExpanded(true);
         } else {
             // change style button
             toggleBtnCariUser.getStyleClass().remove("seryp-btn-secondary");
             toggleBtnCariUser.getStyleClass().add("seryp-btn-primary");
+
             btnUpdate.setVisible(false);
             btnAdd.setVisible(true);
             btnDelete.setVisible(false);
+            txtPassword.setEditable(true); // set password field cannot edit
+            txtPassword2.setEditable(true); // set text field cannot edit
             txtUsername.setEditable(true); // set username editable
             paneCariUser.setExpanded(false);
         }
@@ -225,17 +228,19 @@ public class UserController extends SerypUtil implements Initializable {
     @FXML
     void btnUpdateAction() {
         try {
-            User user = updateAdd();
+            User user = updateAdd("Update");
 
             userDao.update(user);
             if (getFileHandler().getFile() != null) // jika file null tidak akan mengkopi file
-                getFileHandler().copyFileToPath(); // copy file
+                if (!(user.getFotoProfil().equals(getFileHandler().getFile().getAbsolutePath())))
+                    // jika path file sama dengan yang didatabase tidak akan dikopi, dikarenakan jika update maka dia akan mengkopi diri ny sendiri dan menimpa nya
+                    getFileHandler().copyFileToPath(); // copy file
             cleanField();
-            cleanComboBoxResult();
-            cleanComboBoxStatusUser();
+            getFieldControl().cleanComboBoxResult(cboResult);
+            getFieldControl().cleanComboBoxStatus(cboStatusUser);
 
             // combo box harus di set ulang agar item-item selain yang di set tidak hilang
-            setComboBoxStatusUser();
+            getFieldControl().setComboBoxStatus(cboStatusUser, "Status User", "Admin", "Karyawan Aktif", "Karyawan Tidak Aktif");
 
             AlertBox.display("Berhasil Update", "Berhasil update data");
         } catch (SQLException | NullPointerException e) {
@@ -247,16 +252,16 @@ public class UserController extends SerypUtil implements Initializable {
     @FXML
     void btnAddAction() {
         try {
-            User user = updateAdd();
+            User user = updateAdd("Add");
 
             userDao.add(user);
             if (getFileHandler().getFile() != null) // jika file null tidak akan mengkopi file
                 getFileHandler().copyFileToPath(); // copy file
             cleanField();
-            cleanComboBoxStatusUser();
+            getFieldControl().cleanComboBoxStatus(cboStatusUser);
 
             // combo box harus di set ulang agar item-item selain yang di set tidak hilang
-            setComboBoxStatusUser();
+            getFieldControl().setComboBoxStatus(cboStatusUser, "Status User", "Admin", "Karyawan Aktif", "Karyawan Tidak Aktif");
 
             AlertBox.display("Berhasil", "Penambahan user baru berhasil");
         } catch (SQLException | NullPointerException e) {
@@ -278,8 +283,8 @@ public class UserController extends SerypUtil implements Initializable {
                     userDao.delete(username);
 
                     cleanField();
-                    cleanComboBoxResult();
-                    cleanComboBoxStatusUser();
+                    getFieldControl().cleanComboBoxResult(cboResult);
+                    getFieldControl().cleanComboBoxStatus(cboStatusUser);
                     AlertBox.display("Berhasil Delete", "Berhasil menghapus data");
                 }
             }
@@ -309,11 +314,18 @@ public class UserController extends SerypUtil implements Initializable {
         txtAreaAlamat.setText("");
     }
 
-    User updateAdd() {
+    User updateAdd(String aksi) {
         User user = null;
         if (!(txtUsername.getText().equals("") && (txtPassword.getText().equals("") || txtPassword.getText().equals("")))) {
+            // password dibagi menjadi dua karena, password user tidak bisa diganti admin
+            String password = "";
+            if (aksi.equals("Add")) {
+                password = getUtil().md5Hash(txtPassword.getText());
+            }
+            if (aksi.equals("Update")) {
+                password = txtPassword.getText();
+            }
             String username = txtUsername.getText();
-            String password = getUtil().md5Hash(txtPassword.getText());
             String noHandphone = getValidation().validateNoHandphone(txtNoHandphone.getText());
             String nama = txtNama.getText();
             String fotoProfil = getFileHandler().getPathCopy();
@@ -339,17 +351,17 @@ public class UserController extends SerypUtil implements Initializable {
         return user;
     }
 
-    void setComboBoxResult(ObservableList<String> observableList) {
-        Callback<ListView<String>, ListCell<String>> callback = new Callback<ListView<String>, ListCell<String>>() {
+    void setComboBoxResult(ObservableList<User> observableList) {
+        Callback<ListView<User>, ListCell<User>> callback = new Callback<ListView<User>, ListCell<User>>() {
             @Override
-            public ListCell<String> call(ListView<String> stringListView) {
-                ListCell<String> cell = new ListCell<>() {
+            public ListCell<User> call(ListView<User> param) {
+                ListCell<User> cell = new ListCell<>(){
                     @Override
-                    protected void updateItem(String s, boolean empty) {
-                        super.updateItem(s, empty);
+                    protected void updateItem(User item, boolean empty) {
+                        super.updateItem(item, empty);
 
                         if (!empty) {
-                            setText(s);
+                            setText(item.getNama());
                         } else {
                             setText(null);
                         }
@@ -363,33 +375,5 @@ public class UserController extends SerypUtil implements Initializable {
         cboResult.setItems(observableList);
         cboResult.setCellFactory(callback);
         cboResult.setButtonCell(callback.call(null));
-    }
-
-    void setComboBoxStatusUser() {
-        ObservableList<String> observableList = FXCollections.observableArrayList();
-        observableList.addAll("Admin", "Karyawan Aktif", "Karyawan Tidak Aktif");
-
-        cboStatusUser.setPromptText("Status User");
-        cboStatusUser.setItems(observableList);
-    }
-
-    void cleanComboBoxResult() {
-        cboResult.getItems().clear();
-    }
-
-    void cleanComboBoxStatusUser() {
-        // Fungsi dari ini adalah agar kalau pas selesai clear combo box prompt text ny tidak hilang
-        ListCell<String> listCell = new ListCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (!empty) {
-                    setText(item);
-                }
-            }
-        };
-
-        cboStatusUser.getItems().clear();
-        cboStatusUser.setButtonCell(listCell);
     }
 }

@@ -149,28 +149,28 @@ public class UserDao {
         preparedStatement.executeUpdate();
     }
 
-    public ObservableList<String> search(String keyword) throws SQLException {
+    public ObservableList<User> search(String keyword) throws SQLException {
         keyword = '%' + keyword + '%';
-        String sql = "SELECT username FROM user WHERE username LIKE ?";
+        String sql = "SELECT username, nama FROM user WHERE username LIKE ?";
         PreparedStatement preparedStatement = CONN.prepareStatement(sql);
         preparedStatement.setString(1, keyword);
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        ObservableList<String> observableList = FXCollections.observableArrayList();
+        ObservableList<User> observableList = FXCollections.observableArrayList();
         while (resultSet.next()) {
-            observableList.add(resultSet.getString(1));
+            observableList.add(new User(resultSet.getString(1), resultSet.getString(2)));
         }
 
         return observableList;
     }
 
-    public ObservableList<String> searchAll() throws SQLException {
-        String sql = "SELECT username FROM user";
+    public ObservableList<User> searchAll() throws SQLException {
+        String sql = "SELECT username, nama FROM user";
         ResultSet resultSet = CONN.createStatement().executeQuery(sql);
 
-        ObservableList<String> observableList = FXCollections.observableArrayList();
+        ObservableList<User> observableList = FXCollections.observableArrayList();
         while (resultSet.next()) {
-            observableList.add(resultSet.getString(1));
+            observableList.add(new User(resultSet.getString(1), resultSet.getString(2)));
         }
 
         return observableList;

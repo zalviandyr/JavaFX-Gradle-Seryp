@@ -1,5 +1,7 @@
 package seryp.model.dao;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import seryp.model.Pelanggan;
 
 import java.sql.Connection;
@@ -58,9 +60,15 @@ public class PelangganDao {
         return pelangganList;
     }
 
-    public ResultSet getAllId() throws SQLException {
+    public List<String> getAllId() throws SQLException {
         String sql = "SELECT RIGHT(idPelanggan, 3) FROM pelanggan";
-        return CONN.createStatement().executeQuery(sql);
+        ResultSet resultSet = CONN.createStatement().executeQuery(sql);
+
+        List<String> list = new ArrayList<>();
+        while (resultSet.next()) {
+            list.add(resultSet.getString(1));
+        }
+        return list;
     }
 
     public void add(Pelanggan pelanggan) throws SQLException {
@@ -112,17 +120,30 @@ public class PelangganDao {
         preparedStatement.executeUpdate();
     }
 
-    public ResultSet searchAll() throws SQLException {
+    public ObservableList<Pelanggan> searchAll() throws SQLException {
         String sql = "SELECT idPelanggan, nama FROM pelanggan";
-        return CONN.createStatement().executeQuery(sql);
+        ResultSet resultSet = CONN.createStatement().executeQuery(sql);
+
+        ObservableList<Pelanggan> observableList = FXCollections.observableArrayList();
+        while (resultSet.next()) {
+            observableList.add(new Pelanggan(resultSet.getString(1), resultSet.getString(2)));
+        }
+
+        return observableList;
     }
 
-    public ResultSet search(String keyword) throws SQLException {
+    public ObservableList<Pelanggan> search(String keyword) throws SQLException {
         keyword = "%" + keyword + "%";
         String sql = "SELECT idPelanggan, nama FROM pelanggan WHERE nama LIKE ?";
         PreparedStatement preparedStatement = CONN.prepareStatement(sql);
         preparedStatement.setString(1, keyword);
+        ResultSet resultSet = preparedStatement.executeQuery();
 
-        return preparedStatement.executeQuery();
+        ObservableList<Pelanggan> observableList = FXCollections.observableArrayList();
+        while (resultSet.next()) {
+            observableList.add(new Pelanggan(resultSet.getString(1), resultSet.getString(2)));
+        }
+
+        return observableList;
     }
 }

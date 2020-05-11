@@ -58,7 +58,7 @@ public class BarangController extends SerypUtil implements Initializable {
         getWindowControl().setPaneSetting(toggleBtnSetting, paneSetting, settingBar);
 
         // init combo box
-        setComboBoxStatus();
+        getFieldControl().setComboBoxStatus(cboStatus, "Status", "Ready", "Non Ready");
 
         // Setting Text Field
         txtId.setEditable(false);
@@ -121,7 +121,7 @@ public class BarangController extends SerypUtil implements Initializable {
                 // cleaning
                 txtCariBarang.setText("");
                 txtId.setText("");
-                cleanComboBoxResult();
+                getFieldControl().cleanComboBoxResult(cboResult);
 
                 if (toggleBtnCariBarang.isSelected()) {
                     // change style button
@@ -163,11 +163,11 @@ public class BarangController extends SerypUtil implements Initializable {
 
             barangDao.update(barang);
             cleanField();
-            cleanComboBoxResult();
-            cleanComboBoxStatus();
+            getFieldControl().cleanComboBoxResult(cboResult);
+            getFieldControl().cleanComboBoxStatus(cboStatus);
 
             // combo box harus di set ulang agar item-item selain yang di set tidak hilang
-            setComboBoxStatus();
+            getFieldControl().setComboBoxStatus(cboStatus, "Status", "Ready", "Non Ready");
 
             AlertBox.display("Berhasil Update", "Berhasil update data barang");
         } catch (SQLException | NullPointerException e) {
@@ -196,10 +196,10 @@ public class BarangController extends SerypUtil implements Initializable {
 
             barangDao.add(barang);
             cleanField();
-            cleanComboBoxStatus();
+            getFieldControl().cleanComboBoxStatus(cboStatus);
 
             // combo box harus di set ulang agar item-item selain yang di set tidak hilang
-            setComboBoxStatus();
+            getFieldControl().setComboBoxStatus(cboStatus, "Status", "Ready", "Non Ready");
 
             AlertBox.display("Berhasil Tambah", "Berhasil tambah data barang");
         } catch (SQLException | NullPointerException e) {
@@ -219,8 +219,8 @@ public class BarangController extends SerypUtil implements Initializable {
                     barangDao.delete(id);
 
                     cleanField();
-                    cleanComboBoxResult();
-                    cleanComboBoxStatus();
+                    getFieldControl().cleanComboBoxResult(cboResult);
+                    getFieldControl().cleanComboBoxStatus(cboStatus);
                     AlertBox.display("Berhasil Delete", "Berhasil menghapus data");
                 }
             }
@@ -268,30 +268,5 @@ public class BarangController extends SerypUtil implements Initializable {
         cboResult.setItems(observableList);
         cboResult.setCellFactory(cellCallback);
         cboResult.setButtonCell(cellCallback.call(null));
-    }
-
-    void setComboBoxStatus() {
-        cboStatus.setPromptText("Status");
-        cboStatus.getItems().addAll("Ready", "Non Ready");
-    }
-
-    void cleanComboBoxResult() {
-        cboResult.getItems().clear();
-    }
-
-    void cleanComboBoxStatus() {
-        // Fungsi dari ini adalah agar kalau pas selesai clear combo box prompt text ny tidak hilang
-        ListCell<String> listCell = new ListCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (!empty) {
-                    setText(item);
-                }
-            }
-        };
-
-        cboStatus.getItems().clear();
-        cboStatus.setButtonCell(listCell);
     }
 }

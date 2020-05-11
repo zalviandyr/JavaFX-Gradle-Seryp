@@ -1,7 +1,6 @@
 package seryp.controller;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -23,18 +22,14 @@ public class KaryawanController extends SerypUtil implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        init();
-        btnTransaksiAction();
-        btnPembayaranAction();
-        btnLogOutAction();
-    }
-
-    private void init() {
         // set topBar
         getWindowControl().setTopBar(topBar);
 
         // set sideBar
         getWindowControl().setSideBar(sideBar, KaryawanController.userLogin);
+
+        // set effect inner shadow button
+        getUtil().setEffectInnerShadow(btnTransaksi, btnPembayaran);
 
         // init user and send to another scene
         PelangganController.userLogin = KaryawanController.userLogin;
@@ -43,34 +38,22 @@ public class KaryawanController extends SerypUtil implements Initializable {
         ListController.userLogin = KaryawanController.userLogin;
     }
 
-    private void btnTransaksiAction() {
-        btnTransaksi.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                getWindowControl().moveToScene(btnTransaksi, "pelanggan");
-            }
-        });
+    @FXML
+    void btnPembayaranAction() {
+        getWindowControl().moveToScene(btnPembayaran, "pembayaran");
     }
 
-    private void btnPembayaranAction() {
-        btnPembayaran.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                getWindowControl().moveToScene(btnPembayaran, "pembayaran");
-            }
-        });
+    @FXML
+    void btnTransaksiAction() {
+        getWindowControl().moveToScene(btnTransaksi, "pelanggan");
     }
 
-    private void btnLogOutAction() {
-        btnLogOut.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                boolean option = ConfirmBox.display("Yakin ?", "Apakah yakin mau keluar ?");
+    @FXML
+    void btnLogOutAction() {
+        boolean option = ConfirmBox.display("Yakin ?", "Apakah yakin mau keluar ?");
 
-                if (option) {
-                    getWindowControl().moveToScene(btnLogOut, "login");
-                }
-            }
-        });
+        if (option) {
+            getWindowControl().moveToScene(btnLogOut, "login");
+        }
     }
 }

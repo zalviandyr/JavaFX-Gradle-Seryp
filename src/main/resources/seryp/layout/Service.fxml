@@ -123,21 +123,21 @@
                         <Label text="Kerusakan" GridPane.rowIndex="4" />
                         <Label text="Detail Kerusakan" GridPane.rowIndex="6" />
                         <TextArea fx:id="txtAreaDetailKerusakan" prefHeight="200.0" prefWidth="158.0" styleClass="seryp-text-area" GridPane.columnSpan="3" GridPane.rowIndex="7" />
-                        <Button fx:id="btnBack" mnemonicParsing="false" prefHeight="25.0" prefWidth="193.0" text="Back" GridPane.rowIndex="12">
+                        <Button fx:id="btnBack" mnemonicParsing="false" onAction="#btnBackAction" prefHeight="25.0" prefWidth="193.0" text="Back" GridPane.rowIndex="12">
                            <styleClass>
                               <String fx:value="seryp-round" />
                               <String fx:value="seryp-btn-primary" />
                            </styleClass>
                         </Button>
-                        <Button fx:id="btnTambahkanKerusakan" mnemonicParsing="false" prefHeight="29.0" prefWidth="375.0" text="Tambahkan Kerusakan" GridPane.columnIndex="1" GridPane.rowIndex="12">
+                        <Button fx:id="btnTambahkanKerusakan" mnemonicParsing="false" onAction="#btnTambahkanKerusakanAction" prefHeight="29.0" prefWidth="375.0" text="Tambahkan Kerusakan" GridPane.columnIndex="1" GridPane.rowIndex="12">
                            <styleClass>
                               <String fx:value="seryp-round" />
                               <String fx:value="seryp-btn-primary" />
                            </styleClass>
                         </Button>
-                        <ComboBox fx:id="cboKerusakan" prefHeight="25.0" prefWidth="586.0" styleClass="seryp-round" GridPane.columnSpan="3" GridPane.rowIndex="5" />
+                        <ComboBox fx:id="cboKerusakan" onAction="#cboKerusakanAction" prefHeight="25.0" prefWidth="586.0" styleClass="seryp-round" GridPane.columnSpan="3" GridPane.rowIndex="5" />
                         <Label text="Komponen diganti" GridPane.rowIndex="8" />
-                        <Button fx:id="btnDone" mnemonicParsing="false" prefHeight="25.0" prefWidth="193.0" text="Done" GridPane.columnIndex="2" GridPane.rowIndex="12">
+                        <Button fx:id="btnDone" mnemonicParsing="false" onAction="#btnDoneAction" prefHeight="25.0" prefWidth="193.0" text="Done" GridPane.columnIndex="2" GridPane.rowIndex="12">
                            <styleClass>
                               <String fx:value="seryp-round" />
                               <String fx:value="seryp-btn-primary" />
@@ -147,10 +147,10 @@
                         <Label text="ID Pelanggan" GridPane.columnIndex="2" />
                         <TextField fx:id="txtNamaPelanggan" prefHeight="25.0" prefWidth="127.0" styleClass="seryp-round" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                         <TextField fx:id="txtIdPelanggan" styleClass="seryp-round" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="cboKomponenDiganti" prefHeight="25.0" prefWidth="846.0" styleClass="seryp-round" GridPane.columnSpan="3" GridPane.rowIndex="9" />
+                        <ComboBox fx:id="cboKomponenDiganti" onAction="#cboKomponenDigantiAction" prefHeight="25.0" prefWidth="846.0" styleClass="seryp-round" GridPane.columnSpan="3" GridPane.rowIndex="9" />
                         <Label text="Detail Komponen" GridPane.rowIndex="10" />
                         <TextArea fx:id="txtAreaDetailKomponen" prefHeight="200.0" prefWidth="200.0" styleClass="seryp-text-area" GridPane.columnSpan="3" GridPane.rowIndex="11" />
-                        <CheckBox fx:id="cbKomponenDiganti" mnemonicParsing="false" prefHeight="17.0" prefWidth="228.0" text="Adakah komponen diganti ?" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="8" />
+                        <CheckBox fx:id="cbKomponenDiganti" mnemonicParsing="false" onAction="#cbKomponenDigantiAction" prefHeight="17.0" prefWidth="228.0" text="Adakah komponen diganti ?" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="8" />
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="10">
                            <children>
                               <TextField fx:id="txtUnit" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="55.0" styleClass="seryp-round" text="1" />
