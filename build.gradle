@@ -34,7 +34,7 @@ jlink {
         imageOptions = ['--icon', 'src/main/resources/seryp/assets/icon/computer-logo-png-8.ico']
         skipInstaller = false
         installerName = 'SerypApp'
-        installerType = 'exe'
+        installerType = 'msi'
         installerOptions = ['--win-dir-chooser', '--win-menu', '--win-shortcut']
     }
 }
