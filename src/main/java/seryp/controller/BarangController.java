@@ -211,6 +211,10 @@ public class BarangController extends SerypUtil implements Initializable {
                     cleanField();
                     getFieldControl().cleanComboBoxResult(cboResult);
                     getFieldControl().cleanComboBoxStatus(cboStatusBarang);
+
+                    // combo box harus di set ulang agar item-item selain yang di set tidak hilang
+                    getFieldControl().setComboBoxStatus(cboStatusBarang, "Status", "Ready", "Non Ready");
+
                     AlertBox.display("Berhasil Delete", "Berhasil menghapus data");
                 }
             }
