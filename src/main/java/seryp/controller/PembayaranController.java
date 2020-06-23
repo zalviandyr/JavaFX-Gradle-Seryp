@@ -55,6 +55,10 @@ public class PembayaranController extends SerypUtil implements Initializable {
         // set sideBar
         getWindowControl().setSideBar(sideBar, PembayaranController.userLogin);
 
+        // set text nama dan merek label non editable
+        txtNamaPelanggan.setEditable(false);
+        txtMerekLabel.setEditable(false);
+
         // set text field pembayaran non editable
         txtPembayaranDP.setEditable(false);
         txtPembayaranTunai.setEditable(false);
@@ -121,7 +125,7 @@ public class PembayaranController extends SerypUtil implements Initializable {
                             Barang barang = barangDao.get(idBarang);
                             kerusakanDanBarang = kerusakan.getNama() + " + " + barang.getNama() + " " + detailKerusakan.getUnit() + " unit";
                         }
-                        estimasi = estimasiMin + " - " + estimasiMax;
+                        estimasi = getUtil().toIdr(estimasiMin) + " - " + getUtil().toIdr(estimasiMax);
                         observableList.add(new KerusakanDanBarang(kerusakanDanBarang, estimasi));
 
                         totalEstimasiMin += estimasiMin;
@@ -129,7 +133,7 @@ public class PembayaranController extends SerypUtil implements Initializable {
                     }
 
                     // Set label bawah table
-                    lblEstimasi.setText("Rp. " + totalEstimasiMin + " - " + "Rp. " + totalEstimasiMax);
+                    lblEstimasi.setText(getUtil().toIdr(totalEstimasiMin) + " - " + getUtil().toIdr(totalEstimasiMax));
 
                     // untuk menset nilai setiap cell (row) per column maka harus memberi sebuah PropertyValueFactory,
                     // yang mana parameter pertama harus sama dengan variable pada kelas
@@ -189,17 +193,37 @@ public class PembayaranController extends SerypUtil implements Initializable {
                     txtPembayaranTunai.setEditable(false);
                     AlertBox.display("Tidak ada aksi", "Pelanggan sudah melakukan pembayaran");
                 } else if (cbPembayaranDP.isSelected() || cbPembayaranTunai.isSelected()) {
+                    int totalEstimasiMin = detailKerusakanDao.getTotalEstimasiMin(noFaktur);
+                    int totalEstimasiMax = detailKerusakanDao.getTotalEstimasiMax(noFaktur);
+
                     if (cbPembayaranDP.isSelected()) {
                         int pembayaranDP = getValidation().validateInteger(txtPembayaranDP.getText());
-                        servisDao.setPembayaranDP(noFaktur, pembayaranDP);
+
+                        // cek jika dp kurang atau berlebih dari estimasi
+                        if ((pembayaranDP > totalEstimasiMin) && (pembayaranDP < totalEstimasiMax)) {
+                            servisDao.setPembayaranDP(noFaktur, pembayaranDP);
+
+                            AlertBox.display("Berhasil", "Konfimasi Pembayaran pelanggan berhasil");
+                            getWindowControl().moveToScene(btnKonfirmasiPembayaran, "karyawan");
+                        } else {
+                            AlertBox.display("Gagal", "Pembayaran tidak bisa lebih atau kurang dari estimasi");
+                        }
+
                     }
 
                     if (cbPembayaranTunai.isSelected()) {
                         int pembayaranTunai = getValidation().validateInteger(txtPembayaranTunai.getText());
-                        servisDao.setPembayaranTunai(noFaktur, pembayaranTunai);
+
+                        // cek jika tunai kurang atau berlbeih dari estimasi
+                        if ((pembayaranTunai > totalEstimasiMin) && (pembayaranTunai < totalEstimasiMax)) {
+                            servisDao.setPembayaranTunai(noFaktur, pembayaranTunai);
+
+                            AlertBox.display("Berhasil", "Konfimasi Pembayaran pelanggan berhasil");
+                            getWindowControl().moveToScene(btnKonfirmasiPembayaran, "karyawan");
+                        } else {
+                            AlertBox.display("Gagal", "Pembayaran tidak bisa lebih atau kurang dari estimasi");
+                        }
                     }
-                    AlertBox.display("Berhasil", "Konfimasi Pembayaran pelanggan berhasil");
-                    getWindowControl().moveToScene(btnKonfirmasiPembayaran, "karyawan");
                 } else {
                     AlertBox.display("Error", "Centang salah satu pembayaran!");
                 }

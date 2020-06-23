@@ -116,6 +116,8 @@ public class AdminController extends SerypUtil implements Initializable {
                 map.put("alamat", identitasToko.getAlamat());
                 map.put("banyakPelanggan", laporanDao.getPelangganHarian(tanggal));
                 map.put("totalEstimasi", laporanDao.getTotalEstimasiHarian(tanggal));
+                map.put("totalDp", laporanDao.getTotalDpHarian(tanggal));
+                map.put("totalTunai", laporanDao.getTotalTunaiHarian(tanggal));
                 map.put("namaAdmin", AdminController.userLogin.getNama());
 
                 JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(laporanHarianList);

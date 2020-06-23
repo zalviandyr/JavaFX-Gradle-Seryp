@@ -2,6 +2,7 @@ package seryp.model.dao;
 
 import seryp.model.LaporanBulanan;
 import seryp.model.LaporanHarian;
+import seryp.utils.SerypUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class LaporanDao {
+public class LaporanDao extends SerypUtil {
     private final Connection CONN;
 
     public LaporanDao() {
@@ -42,7 +43,7 @@ public class LaporanDao {
 
     public List<LaporanHarian> getLaporanHarian(String tanggal) throws SQLException {
         List<LaporanHarian> laporanHarianList = null;
-        String sql = "SELECT pelanggan.nama,  merkLabel, user.nama, SUM(totalEstimasiMin), SUM(totalEstimasiMax) " +
+        String sql = "SELECT pelanggan.nama,  merkLabel, user.nama, SUM(totalEstimasiMin), SUM(totalEstimasiMax), IF(statusDP = 1, 'Ya', 'Tidak'), uangDp, IF(statusPembayaran = 1, 'Ya', 'Tidak'), uangPembayaran " +
                 "FROM servis JOIN pelanggan USING(idPelanggan) " +
                 "JOIN user USING(username) " +
                 "JOIN detail_kerusakan USING(noFaktur) " +
@@ -55,12 +56,21 @@ public class LaporanDao {
         // jika seryp.laporan ada
         if (resultSet.isBeforeFirst()) {
             laporanHarianList = new ArrayList<>();
-            Locale locale = new Locale("in", "ID");
-            NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
             while (resultSet.next()) {
-                String estimasi = numberFormat.format(resultSet.getInt(4)) + " - " + numberFormat.format(resultSet.getInt(5));
+                String estimasi = getUtil().toIdr(resultSet.getInt(4)) + " - " + getUtil().toIdr(resultSet.getInt(5));
+                String uangDp = getUtil().toIdr(resultSet.getInt(7)).toString();
+                String uangTunai = getUtil().toIdr(resultSet.getInt(9)).toString();
 
-                laporanHarianList.add(new LaporanHarian(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), estimasi));
+                laporanHarianList.add(new LaporanHarian(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        estimasi,
+                        resultSet.getString(6),
+                        uangDp,
+                        resultSet.getString(8),
+                        uangTunai)
+                );
             }
         }
         return laporanHarianList;
@@ -74,9 +84,7 @@ public class LaporanDao {
 
         if (resultSet.next()) {
             int pemasukkan = resultSet.getInt(1);
-            Locale locale = new Locale("in", "ID");
-            NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
-            return numberFormat.format(pemasukkan);
+            return getUtil().toIdr(pemasukkan).toString();
         }
         return "Rp. 0";
     }
@@ -116,10 +124,32 @@ public class LaporanDao {
         if (resultSet.next()) {
             int totalEstimasiMin = resultSet.getInt(1);
             int totalEstimasiMax = resultSet.getInt(2);
-            Locale locale = new Locale("in", "ID");
-            NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
 
-            return numberFormat.format(totalEstimasiMin) + " - " + numberFormat.format(totalEstimasiMax);
+            return getUtil().toIdr(totalEstimasiMin) + " - " + getUtil().toIdr(totalEstimasiMax);
+        }
+        return "Rp. 0";
+    }
+
+    public String getTotalDpHarian(String tanggal) throws SQLException {
+        String sql = "SELECT SUM(uangDp) FROM servis WHERE tanggal = ?";
+        PreparedStatement preparedStatement = CONN.prepareStatement(sql);
+        preparedStatement.setString(1, tanggal);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            return getUtil().toIdr(resultSet.getInt(1)).toString();
+        }
+        return "Rp. 0";
+    }
+
+    public String getTotalTunaiHarian(String tanggal) throws SQLException {
+        String sql = "SELECT SUM(uangPembayaran) FROM servis WHERE tanggal = ?";
+        PreparedStatement preparedStatement = CONN.prepareStatement(sql);
+        preparedStatement.setString(1, tanggal);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            return getUtil().toIdr(resultSet.getInt(1)).toString();
         }
         return "Rp. 0";
     }
@@ -133,10 +163,8 @@ public class LaporanDao {
         if (resultSet.next()) {
             int totalEstimasiMin = resultSet.getInt(1);
             int totalEstimasiMax = resultSet.getInt(2);
-            Locale locale = new Locale("in", "ID");
-            NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
 
-            return numberFormat.format(totalEstimasiMin) + " - " + numberFormat.format(totalEstimasiMax);
+            return getUtil().toIdr(totalEstimasiMin) + " - " + getUtil().toIdr(totalEstimasiMax);
         }
 
         return "Rp .0";

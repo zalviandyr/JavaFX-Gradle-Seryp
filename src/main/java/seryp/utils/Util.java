@@ -12,8 +12,10 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class Util {
     public String getCustomId(List<String> listId, String customChar) {
@@ -92,5 +94,11 @@ public class Util {
                 }
             });
         }
+    }
+
+    public Object toIdr(Object str) {
+        Locale locale = new Locale("in", "ID");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+        return numberFormat.format(str);
     }
 }

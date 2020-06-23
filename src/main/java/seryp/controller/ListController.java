@@ -134,7 +134,7 @@ public class ListController extends SerypUtil implements Initializable {
                         Barang barang = barangDao.get(idBarang);
                         kerusakanDanBarang = kerusakan.getNama() + " + " + barang.getNama() + " " + unit + " Unit";
                     }
-                    estimasi = "Rp. " + estimasiMin + " - " + "Rp. " + estimasiMax;
+                    estimasi = getUtil().toIdr(estimasiMin) + " - " + getUtil().toIdr(estimasiMax);
                     list.add(new KerusakanDanBarang(kerusakanDanBarang, estimasi));
                 }
 
@@ -193,7 +193,7 @@ public class ListController extends SerypUtil implements Initializable {
                     Barang barang = barangDao.get(idBarang);
                     kerusakanDanBarang = kerusakan.getNama() + " + " + barang.getNama() + " " + unit + " Unit";
                 }
-                estimasi = "Rp. " + estimasiMin + " - " + "Rp. " + estimasiMax;
+                estimasi = getUtil().toIdr(estimasiMin) + " - " + getUtil().toIdr(estimasiMax);
                 observableList.add(new KerusakanDanBarang(kerusakanDanBarang, estimasi));
 
                 totalEstimasiMin += estimasiMin;
@@ -201,7 +201,7 @@ public class ListController extends SerypUtil implements Initializable {
             }
 
             // Set label bawah table
-            lblTotalEstimasi.setText("Rp. " + totalEstimasiMin + " - " + "Rp. " + totalEstimasiMax);
+            lblTotalEstimasi.setText(getUtil().toIdr(totalEstimasiMin) + " - " + getUtil().toIdr(totalEstimasiMax));
 
             // untuk menset nilai setiap cell (row) per column maka harus memberi sebuah PropertyValueFactory,
             // yang mana parameter pertama harus sama dengan variable pada kelas

@@ -2,6 +2,7 @@ package seryp.model.dao;
 
 import seryp.model.DetailKerusakan;
 
+import javax.print.attribute.standard.RequestingUserName;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,5 +102,25 @@ public class DetailKerusakanDao {
         }
 
         return detailKerusakanList;
+    }
+
+    public int getTotalEstimasiMin(String noFaktur) throws SQLException {
+        String sql = "SELECT SUM(totalEstimasiMin) FROM detail_kerusakan WHERE noFaktur = ?";
+        PreparedStatement preparedStatement = CON.prepareStatement(sql);
+        preparedStatement.setString(1, noFaktur);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        resultSet.next();
+        return resultSet.getInt(1);
+    }
+
+    public int getTotalEstimasiMax(String noFaktur) throws SQLException {
+        String sql = "SELECT SUM(totalEstimasiMax) FROM detail_kerusakan WHERE noFaktur = ?";
+        PreparedStatement preparedStatement = CON.prepareStatement(sql);
+        preparedStatement.setString(1, noFaktur);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        resultSet.next();
+        return resultSet.getInt(1);
     }
 }
