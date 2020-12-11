@@ -12,4 +12,7 @@
 - Backup and Restore
 - Installation Database
 
+## Build
+Gunakan JPackage untuk build menjadi installer .exe
+
 **Note :** JPackage need WiXToolset
